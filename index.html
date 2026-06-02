@@ -661,38 +661,76 @@ function clearForm() {
 }
 
 // ── URL SCRAPER ───────────────────────────────────────────────────────────────
+
+// CORS proxies tried in order — if one fails, we move to the next
+const CORS_PROXIES = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  url => `https://thingproxy.freeboard.io/fetch/${url}`,
+];
+
+async function fetchViaProxy(targetUrl) {
+  let lastError = '';
+  for (const proxyFn of CORS_PROXIES) {
+    try {
+      const proxyUrl = proxyFn(targetUrl);
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+      if (!res.ok) { lastError = `HTTP ${res.status}`; continue; }
+
+      // allorigins wraps content in JSON; others return raw HTML
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await res.json();
+        const html = data.contents || data.body || '';
+        if (html) return html;
+        lastError = 'Empty response from proxy';
+      } else {
+        const html = await res.text();
+        if (html && html.length > 500) return html;
+        lastError = 'Response too short';
+      }
+    } catch (e) {
+      lastError = e.message;
+    }
+  }
+  throw new Error(`All proxies failed. Last error: ${lastError}`);
+}
+
 document.getElementById('f-scrape-btn').addEventListener('click', async () => {
   const url = document.getElementById('f-url-input').value.trim();
-  if (!url) { showScrapeStatus('Please enter a URL first', 'error'); return; }
+  if (!url) { showScrapeStatus('Please enter a URL first.', 'error'); return; }
+  if (!url.startsWith('http')) { showScrapeStatus('Please enter a full URL starting with https://', 'error'); return; }
 
-  showScrapeStatus('Fetching recipe…', 'loading');
+  showScrapeStatus('Fetching recipe… (trying multiple sources)', 'loading');
   document.getElementById('f-scrape-btn').disabled = true;
 
   try {
-    // Use allorigins.win as a CORS proxy to fetch the page
-    const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-    const res = await fetch(proxy);
-    const data = await res.json();
-    const html = data.contents;
-
-    if (!html) throw new Error('Could not fetch the page.');
-
+    const html    = await fetchViaProxy(url);
     const scraped = scrapeRecipeFromHTML(html, url);
 
+    // Populate form with whatever was found
     if (scraped.name)        document.getElementById('f-name').value        = scraped.name;
     if (scraped.image)       document.getElementById('f-image').value       = scraped.image;
     if (scraped.source)      document.getElementById('f-source').value      = scraped.source;
-    if (scraped.ingredients) document.getElementById('f-ingredients').value  = scraped.ingredients;
+    if (scraped.ingredients) document.getElementById('f-ingredients').value = scraped.ingredients;
     if (scraped.steps)       document.getElementById('f-steps').value       = scraped.steps;
 
-    const filled = [scraped.name, scraped.ingredients, scraped.steps].filter(Boolean).length;
-    if (filled >= 2) {
-      showScrapeStatus('Recipe imported! Review and edit the details below before saving.', 'success');
+    const filledCount = [scraped.name, scraped.ingredients, scraped.steps].filter(Boolean).length;
+
+    if (filledCount === 3) {
+      showScrapeStatus('✓ Recipe imported successfully. Review the details below before saving.', 'success');
+    } else if (filledCount >= 1) {
+      showScrapeStatus('Partially imported — some fields could not be detected automatically. Please fill in the missing details.', 'error');
     } else {
-      showScrapeStatus('Partially imported — the page may use a non-standard format. Please fill in any missing fields.', 'error');
+      showScrapeStatus('Could not extract recipe data from this page. The site may not use standard recipe markup. Please fill in the fields manually.', 'error');
     }
   } catch (e) {
-    showScrapeStatus('Could not scrape this page: ' + e.message, 'error');
+    showScrapeStatus(
+      'Could not fetch this page. Some sites block automated requests. ' +
+      'Try copying the recipe URL into a new tab, then paste the details manually here.',
+      'error'
+    );
   } finally {
     document.getElementById('f-scrape-btn').disabled = false;
   }
@@ -701,36 +739,81 @@ document.getElementById('f-scrape-btn').addEventListener('click', async () => {
 function scrapeRecipeFromHTML(html, url) {
   const result = { source: url };
 
-  // Try JSON-LD structured data first (most reliable)
-  const ldMatches = html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
+  // ── 1. JSON-LD structured data (most reliable — used by NYT, AllRecipes, etc.) ──
+  const ldMatches = [...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
   for (const m of ldMatches) {
     try {
-      const json = JSON.parse(m[1]);
-      const schemas = Array.isArray(json) ? json : (json['@graph'] || [json]);
+      // Clean common JSON issues before parsing
+      const cleaned = m[1].trim().replace(/[\u0000-\u001F\u007F]/g, ' ');
+      const json    = JSON.parse(cleaned);
+      const schemas = Array.isArray(json) ? json : [json, ...(json['@graph'] || [])];
+
       for (const s of schemas) {
-        if (s['@type'] === 'Recipe' || (Array.isArray(s['@type']) && s['@type'].includes('Recipe'))) {
-          result.name = s.name || '';
-          result.image = Array.isArray(s.image) ? (s.image[0]?.url || s.image[0]) : (s.image?.url || s.image || '');
-          if (s.recipeIngredient) result.ingredients = s.recipeIngredient.join('\n');
-          if (s.recipeInstructions) {
-            const steps = Array.isArray(s.recipeInstructions)
-              ? s.recipeInstructions.map(i => typeof i === 'string' ? i : (i.text || '')).filter(Boolean)
-              : [s.recipeInstructions];
-            result.steps = steps.join('\n');
-          }
-          return result;
+        const types = Array.isArray(s['@type']) ? s['@type'] : [s['@type']];
+        if (!types.includes('Recipe')) continue;
+
+        result.name = decodeHTML(s.name || '');
+
+        // Image — can be string, object with url, or array of either
+        const imgRaw = Array.isArray(s.image) ? s.image[0] : s.image;
+        result.image = typeof imgRaw === 'string' ? imgRaw : (imgRaw?.url || '');
+
+        // Ingredients
+        if (Array.isArray(s.recipeIngredient) && s.recipeIngredient.length) {
+          result.ingredients = s.recipeIngredient.map(decodeHTML).join('\n');
         }
+
+        // Steps — can be array of strings, HowToStep objects, or HowToSection objects
+        if (s.recipeInstructions) {
+          const steps = [];
+          const instr = Array.isArray(s.recipeInstructions) ? s.recipeInstructions : [s.recipeInstructions];
+          for (const item of instr) {
+            if (typeof item === 'string') {
+              steps.push(decodeHTML(item));
+            } else if (item['@type'] === 'HowToStep') {
+              const text = item.text || item.name || '';
+              if (text) steps.push(decodeHTML(text));
+            } else if (item['@type'] === 'HowToSection') {
+              // Section with a name + nested steps
+              if (item.name) steps.push(item.name + ':');
+              const nested = Array.isArray(item.itemListElement) ? item.itemListElement : [];
+              for (const ns of nested) {
+                const text = ns.text || ns.name || '';
+                if (text) steps.push(decodeHTML(text));
+              }
+            }
+          }
+          if (steps.length) result.steps = steps.join('\n');
+        }
+
+        return result; // found a Recipe schema — stop here
       }
     } catch {}
   }
 
-  // Fallback: try Open Graph / meta tags for name and image
-  const ogTitle = html.match(/<meta[^>]*property=["']og:title["'][^>]*content=["']([^"']+)["']/i);
-  const ogImage = html.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["']/i);
-  if (ogTitle) result.name  = ogTitle[1];
-  if (ogImage) result.image = ogImage[1];
+  // ── 2. Open Graph meta tags (fallback for name + image) ──
+  const titleMatch = html.match(/<meta[^>]*(?:property=["']og:title["'][^>]*content=["']([^"']+)["']|content=["']([^"']+)["'][^>]*property=["']og:title["'])/i);
+  const imageMatch = html.match(/<meta[^>]*(?:property=["']og:image["'][^>]*content=["']([^"']+)["']|content=["']([^"']+)["'][^>]*property=["']og:image["'])/i);
+  const titleTag   = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+
+  if (titleMatch) result.name  = decodeHTML(titleMatch[1] || titleMatch[2] || '');
+  else if (titleTag) result.name = decodeHTML(titleTag[1] || '');
+  if (imageMatch) result.image = imageMatch[1] || imageMatch[2] || '';
 
   return result;
+}
+
+// Decode common HTML entities in scraped text
+function decodeHTML(str) {
+  return (str || '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/<[^>]+>/g, '')   // strip any inline HTML tags
+    .trim();
 }
 
 function showScrapeStatus(msg, type) {
