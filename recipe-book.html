@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Recipe Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --cream:#FDFAF5;
+    --warm-white:#FAF7F0;
+    --tan:#E8E0CC;
+    --sand:#D4C9A8;
+    --brown:#5C4A2A;
+    --dark-brown:#2E2416;
+    --accent:#C2673A;
+    --accent-light:#F0E6DC;
+    --muted:#8A7A62;
+    --tag-bg:#EDE8DF;
+    --card-shadow:0 2px 16px rgba(44,36,22,0.08);
+    --radius:12px;
+  }
+  html{font-size:16px}
+  body{background:var(--cream);color:var(--dark-brown);font-family:'DM Sans',sans-serif;font-weight:400;min-height:100vh;}
+
+  header{background:var(--dark-brown);padding:2.5rem 2rem 2rem;text-align:center;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+  header h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:#FAF7F0;letter-spacing:-0.5px;position:relative;}
+  header h1 em{color:#C2673A;font-style:italic}
+  header p{color:#A89880;font-size:0.95rem;margin-top:0.5rem;position:relative;}
+
+  .controls{background:var(--warm-white);border-bottom:1px solid var(--tan);padding:1rem 1.5rem;display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:100;}
+  .search-wrap{position:relative;flex:1;min-width:200px;}
+  .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+  .search-wrap input{width:100%;padding:0.6rem 0.75rem 0.6rem 2.4rem;border:1.5px solid var(--tan);border-radius:8px;background:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--dark-brown);outline:none;transition:border-color 0.2s;}
+  .search-wrap input:focus{border-color:var(--accent)}
+  .search-wrap input::placeholder{color:var(--muted)}
+  select{padding:0.6rem 2rem 0.6rem 0.85rem;border:1.5px solid var(--tan);border-radius:8px;background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A7A62' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 6px center no-repeat;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--dark-brown);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;}
+  select:focus{border-color:var(--accent)}
+  .refresh-btn{padding:0.6rem 1rem;border:1.5px solid var(--tan);border-radius:8px;background:white;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--brown);cursor:pointer;display:flex;align-items:center;gap:0.4rem;transition:all 0.15s;white-space:nowrap;}
+  .refresh-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .refresh-btn svg{transition:transform 0.4s;}
+  .refresh-btn.spinning svg{animation:spin 0.8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .count-badge{font-size:0.82rem;color:var(--muted);white-space:nowrap;margin-left:auto;}
+
+  .tag-filters{background:var(--warm-white);border-bottom:1px solid var(--tan);padding:0.75rem 1.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;}
+  .tag-filters span{font-size:0.8rem;color:var(--muted);margin-right:0.25rem;}
+  .tag-btn{padding:0.35rem 0.85rem;border-radius:100px;border:1.5px solid var(--tan);background:white;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--brown);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+  .tag-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .tag-btn.active{background:var(--accent);border-color:var(--accent);color:white}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;padding:1.5rem;max-width:1400px;margin:0 auto;}
+
+  .card{background:white;border-radius:var(--radius);overflow:hidden;border:1px solid var(--tan);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;display:flex;flex-direction:column;}
+  .card:hover{transform:translateY(-3px);box-shadow:var(--card-shadow);}
+  .card-img{width:100%;aspect-ratio:3/2;object-fit:cover;background:var(--tag-bg);display:block;flex-shrink:0;}
+  .card-img-placeholder{width:100%;aspect-ratio:3/2;background:var(--tan);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;}
+  .card-body{padding:1rem}
+  .card-tags{display:flex;gap:0.35rem;flex-wrap:wrap;margin-bottom:0.5rem;}
+  .tag{font-size:0.72rem;padding:0.2rem 0.6rem;border-radius:100px;background:var(--tag-bg);color:var(--brown);font-weight:500;letter-spacing:0.01em;}
+  .tag.salmon{background:#F0E8E0;color:#7A3E1A}
+  .tag.sweet{background:#F5EAE0;color:#6B3A1A}
+  .tag.entr-e,.tag.entree{background:#E8EFF0;color:#1A4A50}
+  .tag.soups{background:#E8EDE0;color:#2A4A1A}
+  .tag.bread{background:#F5F0E0;color:#5A4A0A}
+  .tag.snack{background:#F0EAE8;color:#5A2A20}
+  .tag.drink{background:#E8EDF5;color:#1A2A5A}
+  .tag.salad{background:#E8F0E8;color:#1A4A1A}
+  .tag.pasta{background:#F5EDE0;color:#6A3A0A}
+  .tag.sauces{background:#EAEAEE;color:#2A2A4A}
+  .tag.chicken{background:#F0EDE0;color:#4A3A0A}
+  .tag.meat{background:#F0E8E8;color:#5A1A1A}
+  .tag.breakfest,.tag.breakfast{background:#E8F5F0;color:#0A4A3A}
+  .tag.dressing{background:#EEE8F0;color:#3A1A4A}
+  .card-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--dark-brown);line-height:1.35;margin-bottom:0.35rem;}
+  .card-source{font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:0.3rem;}
+  .card-source a{color:var(--accent);text-decoration:none;}
+  .card-source a:hover{text-decoration:underline}
+
+  /* Loading / error states */
+  .state-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;gap:1rem;grid-column:1/-1;}
+  .spinner{width:40px;height:40px;border:3px solid var(--tan);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+  .state-screen p{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--brown);}
+  .state-screen small{font-size:0.85rem;color:var(--muted);max-width:400px;text-align:center;line-height:1.6;}
+  .error-icon{font-size:2.5rem;}
+
+  .no-results{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--muted);}
+  .no-results p:first-child{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--brown);margin-bottom:0.5rem;}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(20,14,6,0.6);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;}
+  .modal-overlay.open{display:flex}
+  .modal{background:white;border-radius:16px;width:100%;max-width:700px;overflow:hidden;position:relative;margin:auto;animation:slideUp 0.25s ease;}
+  @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+  .modal-img{width:100%;max-height:320px;object-fit:cover;display:block;}
+  .modal-img-placeholder{width:100%;height:200px;background:var(--tan);display:flex;align-items:center;justify-content:center;font-size:4rem;}
+  .modal-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--dark-brown);transition:background 0.15s;}
+  .modal-close:hover{background:white}
+  .modal-body{padding:1.75rem}
+  .modal-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.75rem}
+  .modal-title{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:600;color:var(--dark-brown);line-height:1.25;margin-bottom:0.5rem;}
+  .modal-meta{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;}
+  .modal-meta a{color:var(--accent);text-decoration:none;}
+  .modal-meta a:hover{text-decoration:underline}
+  .modal-section{margin-bottom:1.5rem}
+  .modal-section h3{font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--tan);}
+  .ingredients-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.35rem;}
+  .ing-item{font-size:0.9rem;color:var(--dark-brown);padding:0.3rem 0;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4;}
+  .ing-item::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:0.45rem;}
+  .steps-list{display:flex;flex-direction:column;gap:0.85rem;}
+  .step-item{display:flex;gap:1rem;font-size:0.9rem;line-height:1.6;color:var(--dark-brown);}
+  .step-num{width:26px;height:26px;border-radius:50%;background:var(--dark-brown);color:var(--cream);font-size:0.78rem;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.15rem;}
+  .section-header{font-weight:500;color:var(--brown);font-size:0.9rem;margin-top:0.5rem;font-style:italic;}
+
+  @media(max-width:600px){
+    .grid{grid-template-columns:1fr;padding:1rem}
+    .controls{padding:0.75rem 1rem}
+    .tag-filters{padding:0.5rem 1rem}
+    .modal-body{padding:1.25rem}
+    .modal-title{font-size:1.4rem}
+    .ingredients-list{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>My <em>Recipe Book</em></h1>
+  <p id="header-sub">Loading recipes from your spreadsheet…</p>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="search" placeholder="Search recipes or ingredients…" disabled>
+  </div>
+  <select id="sort" disabled>
+    <option value="default">Sort: Default</option>
+    <option value="az">A → Z</option>
+    <option value="za">Z → A</option>
+  </select>
+  <button class="refresh-btn" id="refresh-btn" title="Refresh from spreadsheet">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+    Refresh
+  </button>
+  <span class="count-badge" id="count-badge"></span>
+</div>
+
+<div class="tag-filters" id="tag-filters"><span>Loading…</span></div>
+
+<main class="grid" id="grid">
+  <div class="state-screen">
+    <div class="spinner"></div>
+    <p>Fetching your recipes…</p>
+    <small>Connecting to Google Sheets</small>
+  </div>
+</main>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+const SHEET_ID = '1u-KWjdJA1B5aYH_8ZKPlZyaxliK87TrxUICADWnq80Y';
+const API_KEY  = 'REMOVED';
+const SHEET_NAME = 'Sheet1';
+
+let RECIPES = [];
+let activeTag = 'All';
+let searchQuery = '';
+let sortMode = 'default';
+
+// ---------- FETCH FROM SHEETS API ----------
+async function fetchRecipes() {
+  const grid = document.getElementById('grid');
+  const btn  = document.getElementById('refresh-btn');
+  btn.classList.add('spinning');
+  grid.innerHTML = `<div class="state-screen"><div class="spinner"></div><p>Fetching your recipes…</p><small>Connecting to Google Sheets</small></div>`;
+  document.getElementById('search').disabled = true;
+  document.getElementById('sort').disabled = true;
+
+  const range = encodeURIComponent(`${SHEET_NAME}!A:F`);
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    const rows = data.values || [];
+    if (rows.length < 2) throw new Error('No recipe rows found in the sheet.');
+
+    // First row is headers; find column indexes
+    const headers = rows[0].map(h => h.trim().toLowerCase());
+    const col = name => headers.findIndex(h => h.includes(name));
+    const iDate  = col('date');
+    const iName  = col('recipe');
+    const iURL   = col('source');
+    const iIng   = col('ingredient');
+    const iTags  = col('tag');
+    const iImg   = col('image');
+
+    RECIPES = [];
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      const get = idx => (idx >= 0 && idx < row.length) ? row[idx].trim() : '';
+      const name = get(iName);
+      if (!name) continue;
+
+      const raw = get(iIng);
+      const {ingredients, steps} = parseContent(raw);
+      const tags = get(iTags).split(',').map(t => t.trim()).filter(Boolean);
+      const image = get(iImg).replace(/&amp;/g,'&').split('?auto=')[0];
+
+      RECIPES.push({
+        title: name,
+        source: get(iURL),
+        image,
+        tags,
+        ingredients,
+        steps
+      });
+    }
+
+    document.getElementById('search').disabled = false;
+    document.getElementById('sort').disabled = false;
+    document.getElementById('header-sub').textContent = `${RECIPES.length} recipes • last updated ${new Date().toLocaleTimeString()}`;
+    buildTagFilters();
+    render();
+  } catch (e) {
+    grid.innerHTML = `<div class="state-screen">
+      <div class="error-icon">⚠️</div>
+      <p>Couldn't load recipes</p>
+      <small>${e.message}<br><br>Make sure the sheet is shared publicly and the API key is valid.</small>
+    </div>`;
+    document.getElementById('header-sub').textContent = 'Failed to load — check connection and try refreshing';
+    document.getElementById('tag-filters').innerHTML = '<span>—</span>';
+  } finally {
+    btn.classList.remove('spinning');
+  }
+}
+
+// ---------- PARSE INGREDIENTS + STEPS ----------
+function parseContent(raw) {
+  const ingredients = [];
+  const steps = [];
+  if (!raw) return {ingredients, steps};
+
+  if (raw.includes('[INGREDIENTS]') && raw.includes('[STEPS]')) {
+    const ingPart   = raw.split('[INGREDIENTS]')[1].split('[STEPS]')[0];
+    const stepsPart = raw.split('[STEPS]')[1];
+    ingPart.split('\n').forEach(l => {
+      const t = l.trim();
+      if (t && !t.startsWith('[')) ingredients.push(t);
+    });
+    stepsPart.split('\n').forEach(l => {
+      let t = l.trim().replace(/^\d+\.\s*/, '');
+      if (t && t.length > 3 && t !== 'Watch' && !t.startsWith('Make the recipe with us')) steps.push(t);
+    });
+  } else if (raw.includes('[STEPS]')) {
+    raw.split('[STEPS]')[1].split('\n').forEach(l => {
+      let t = l.trim().replace(/^\d+\.\s*/, '');
+      if (t && t.length > 3) steps.push(t);
+    });
+  } else {
+    raw.split('\n').forEach(l => {
+      const t = l.trim();
+      if (t && !t.startsWith('[')) ingredients.push(t);
+    });
+  }
+  return {ingredients, steps};
+}
+
+// ---------- TAG FILTERS ----------
+function buildTagFilters() {
+  const allTags = [...new Set(RECIPES.flatMap(r => r.tags))].sort();
+  const container = document.getElementById('tag-filters');
+  container.innerHTML = '<span>Filter:</span>' + ['All', ...allTags].map(t =>
+    `<button class="tag-btn${t === activeTag ? ' active' : ''}" data-tag="${t}">${t}</button>`
+  ).join('');
+  container.querySelectorAll('.tag-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeTag = btn.dataset.tag;
+      container.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    });
+  });
+}
+
+// ---------- RENDER ----------
+function tagClass(tag) {
+  return tag.toLowerCase().replace(/[éè]/g,'e').replace(/[^a-z]/g,'');
+}
+
+function filteredRecipes() {
+  let list = RECIPES.map((r,i) => ({...r, origIdx: i}));
+  if (activeTag !== 'All') list = list.filter(r => r.tags.some(t => t.toLowerCase() === activeTag.toLowerCase()));
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(r =>
+      r.title.toLowerCase().includes(q) ||
+      r.ingredients.some(i => i.toLowerCase().includes(q)) ||
+      r.tags.some(t => t.toLowerCase().includes(q))
+    );
+  }
+  if (sortMode === 'az') list.sort((a,b) => a.title.localeCompare(b.title));
+  else if (sortMode === 'za') list.sort((a,b) => b.title.localeCompare(a.title));
+  return list;
+}
+
+function render() {
+  const list = filteredRecipes();
+  const grid = document.getElementById('grid');
+  document.getElementById('count-badge').textContent = `${list.length} recipe${list.length !== 1 ? 's' : ''}`;
+
+  if (!list.length) {
+    grid.innerHTML = `<div class="no-results"><p>Nothing found</p><p>Try a different search or filter.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(r => {
+    const tagHTML = r.tags.map(t => `<span class="tag ${tagClass(t)}">${t}</span>`).join('');
+    const imgHTML = r.image
+      ? `<img class="card-img" src="${r.image}" alt="${r.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      : '';
+    const placeholder = `<div class="card-img-placeholder" style="${r.image ? 'display:none' : ''}">🍽️</div>`;
+    const srcHTML = r.source
+      ? `<a href="${r.source}" target="_blank" onclick="event.stopPropagation()">View original ↗</a>`
+      : `<span>Personal recipe</span>`;
+    return `<div class="card" data-idx="${r.origIdx}" tabindex="0" role="button" aria-label="Open ${r.title}">
+      ${imgHTML}${placeholder}
+      <div class="card-body">
+        <div class="card-tags">${tagHTML}</div>
+        <div class="card-title">${r.title}</div>
+        <div class="card-source">${srcHTML}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.card').forEach(card => {
+    const open = () => openModal(RECIPES[+card.dataset.idx]);
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }});
+  });
+}
+
+// ---------- MODAL ----------
+function openModal(r) {
+  const tagHTML = r.tags.map(t => `<span class="tag ${tagClass(t)}">${t}</span>`).join('');
+  const srcLink = r.source ? `<a href="${r.source}" target="_blank">View original recipe ↗</a>` : '<span>Personal recipe</span>';
+
+  // Group ingredients by section headers
+  let ingHTML = '';
+  let section = {header: null, items: []};
+  const flushSection = () => {
+    if (!section.items.length) return;
+    if (section.header) ingHTML += `<p class="section-header">${section.header}</p>`;
+    ingHTML += `<div class="ingredients-list">${section.items.map(i => `<div class="ing-item">${i}</div>`).join('')}</div>`;
+    section = {header: null, items: []};
+  };
+  r.ingredients.forEach(line => {
+    if (line.endsWith(':') && line.length < 60 && !/^\d/.test(line)) {
+      flushSection();
+      section.header = line.replace(/:$/, '');
+    } else {
+      section.items.push(line);
+    }
+  });
+  flushSection();
+
+  let stepNum = 0;
+  const stepsHTML = r.steps.map(s => {
+    if (s.endsWith(':') && s.length < 60 && !/^[a-z]/.test(s)) return `<p class="section-header">${s.replace(/:$/, '')}</p>`;
+    stepNum++;
+    return `<div class="step-item"><div class="step-num">${stepNum}</div><div>${s}</div></div>`;
+  }).join('');
+
+  const imgHTML = r.image
+    ? `<img class="modal-img" src="${r.image}" alt="${r.title}" onerror="this.style.display='none'">`
+    : `<div class="modal-img-placeholder">🍽️</div>`;
+
+  document.getElementById('modal-content').innerHTML = `
+    ${imgHTML}
+    <div class="modal-body">
+      <div class="modal-tags">${tagHTML}</div>
+      <h2 class="modal-title">${r.title}</h2>
+      <div class="modal-meta">${srcLink}</div>
+      ${ingHTML ? `<div class="modal-section"><h3>Ingredients</h3>${ingHTML}</div>` : ''}
+      ${stepsHTML ? `<div class="modal-section"><h3>Instructions</h3><div class="steps-list">${stepsHTML}</div></div>` : ''}
+    </div>`;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ---------- EVENT LISTENERS ----------
+document.getElementById('search').addEventListener('input', e => { searchQuery = e.target.value; render(); });
+document.getElementById('sort').addEventListener('change', e => { sortMode = e.target.value; render(); });
+document.getElementById('refresh-btn').addEventListener('click', fetchRecipes);
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ---------- INIT ----------
+fetchRecipes();
+</script>
+</body>
+</html>
