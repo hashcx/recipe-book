@@ -209,6 +209,27 @@ let sortMode = 'default';
 let tokenClient;
 let accessToken = null;
 
+const TOKEN_KEY   = 'rb_access_token';
+const EXPIRY_KEY  = 'rb_token_expiry';
+
+function saveToken(token, expiresIn) {
+  const expiry = Date.now() + (expiresIn - 60) * 1000; // subtract 60s buffer
+  localStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(EXPIRY_KEY, expiry.toString());
+}
+
+function loadToken() {
+  const token  = localStorage.getItem(TOKEN_KEY);
+  const expiry = parseInt(localStorage.getItem(EXPIRY_KEY) || '0');
+  if (token && Date.now() < expiry) return token;
+  return null;
+}
+
+function clearToken() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(EXPIRY_KEY);
+}
+
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 
 function initGIS() {
@@ -216,22 +237,32 @@ function initGIS() {
     client_id: CLIENT_ID,
     scope: SCOPES,
     callback: async (resp) => {
-      if (resp.error) { showError('Sign-in failed: ' + resp.error); return; }
+      if (resp.error) { return; }
       accessToken = resp.access_token;
+      saveToken(accessToken, resp.expires_in || 3600);
       showApp();
       await fetchRecipes();
     }
   });
+
+  // Try to reuse a saved token silently on page load
+  const saved = loadToken();
+  if (saved) {
+    accessToken = saved;
+    showApp();
+    fetchRecipes();
+  }
 }
 
 document.getElementById('signin-btn').addEventListener('click', () => {
-  if (!tokenClient) { alert('Google sign-in is still loading. Please wait a moment and try again.'); return; }
+  if (!tokenClient) { alert('Google sign-in is still loading. Please try again in a moment.'); return; }
   tokenClient.requestAccessToken();
 });
 
 document.getElementById('signout-btn').addEventListener('click', () => {
   if (accessToken) google.accounts.oauth2.revoke(accessToken, () => {});
   accessToken = null;
+  clearToken();
   RECIPES = [];
   document.getElementById('app-screen').classList.add('hidden');
   document.getElementById('signin-screen').classList.remove('hidden');
@@ -274,9 +305,10 @@ async function fetchRecipes() {
       headers: { Authorization: `Bearer ${accessToken}` }
     });
 
-    // Token may have expired — prompt re-auth
+    // Token expired — clear it and prompt re-auth
     if (res.status === 401) {
       accessToken = null;
+      clearToken();
       tokenClient.requestAccessToken();
       return;
     }
