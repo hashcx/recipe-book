@@ -49,10 +49,9 @@
   .count-badge{font-size:0.82rem;color:var(--muted);white-space:nowrap;margin-left:auto;}
 
   /* USER CHIP */
-  .user-chip{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.85rem 0.4rem 0.4rem;border:1.5px solid var(--tan);border-radius:100px;background:white;font-size:0.82rem;color:var(--muted);}
-  .user-chip img{width:24px;height:24px;border-radius:50%;object-fit:cover;}
-  .user-chip span{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .signout-btn{background:none;border:none;font-size:0.8rem;color:var(--muted);cursor:pointer;padding:0;margin-left:0.25rem;opacity:0.6;}
+  .user-chip{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.75rem;border:1.5px solid var(--tan);border-radius:100px;background:white;font-size:0.82rem;color:var(--muted);}
+  .user-chip span{max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .signout-btn{background:none;border:none;font-size:0.75rem;color:var(--muted);cursor:pointer;padding:0;opacity:0.6;line-height:1;}
   .signout-btn:hover{opacity:1;color:var(--accent);}
 
   /* TAG FILTERS */
@@ -171,7 +170,6 @@
       Refresh
     </button>
     <div class="user-chip" id="user-chip" style="display:none">
-      <img id="user-avatar" src="" alt="">
       <span id="user-name"></span>
       <button class="signout-btn" id="signout-btn" title="Sign out">✕</button>
     </div>
@@ -283,7 +281,6 @@ async function loadUserInfo() {
     });
     const u = await res.json();
     document.getElementById('user-name').textContent = u.given_name || u.email;
-    document.getElementById('user-avatar').src = u.picture || '';
     document.getElementById('user-chip').style.display = 'flex';
     document.getElementById('header-sub').textContent = `Signed in as ${u.email}`;
   } catch {}
