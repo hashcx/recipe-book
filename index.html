@@ -10,28 +10,29 @@
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --cream:#FDFAF5;
-    --warm-white:#FAF7F0;
-    --tan:#E8E0CC;
-    --sand:#D4C9A8;
-    --brown:#5C4A2A;
-    --dark-brown:#2E2416;
-    --accent:#C2673A;
-    --accent-light:#F0E6DC;
-    --muted:#8A7A62;
-    --tag-bg:#EDE8DF;
-    --card-shadow:0 2px 16px rgba(44,36,22,0.08);
-    --radius:12px;
+    --cream:#FDFAF5;--warm-white:#FAF7F0;--tan:#E8E0CC;--brown:#5C4A2A;
+    --dark-brown:#2E2416;--accent:#C2673A;--muted:#8A7A62;--tag-bg:#EDE8DF;
+    --card-shadow:0 2px 16px rgba(44,36,22,0.08);--radius:12px;
   }
   html{font-size:16px}
   body{background:var(--cream);color:var(--dark-brown);font-family:'DM Sans',sans-serif;font-weight:400;min-height:100vh;}
 
+  /* HEADER */
   header{background:var(--dark-brown);padding:2.5rem 2rem 2rem;text-align:center;position:relative;overflow:hidden;}
   header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
   header h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:#FAF7F0;letter-spacing:-0.5px;position:relative;}
   header h1 em{color:#C2673A;font-style:italic}
   header p{color:#A89880;font-size:0.95rem;margin-top:0.5rem;position:relative;}
 
+  /* SIGN-IN SCREEN */
+  #signin-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:1.5rem;padding:3rem 2rem;text-align:center;}
+  #signin-screen h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--brown);}
+  #signin-screen p{font-size:0.95rem;color:var(--muted);max-width:360px;line-height:1.6;}
+  .google-btn{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1.5rem;background:white;border:1.5px solid var(--tan);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--dark-brown);cursor:pointer;transition:box-shadow 0.2s,border-color 0.2s;font-weight:500;}
+  .google-btn:hover{border-color:var(--accent);box-shadow:var(--card-shadow);}
+  .google-btn svg{flex-shrink:0;}
+
+  /* CONTROLS */
   .controls{background:var(--warm-white);border-bottom:1px solid var(--tan);padding:1rem 1.5rem;display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:100;}
   .search-wrap{position:relative;flex:1;min-width:200px;}
   .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
@@ -40,21 +41,31 @@
   .search-wrap input::placeholder{color:var(--muted)}
   select{padding:0.6rem 2rem 0.6rem 0.85rem;border:1.5px solid var(--tan);border-radius:8px;background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A7A62' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 6px center no-repeat;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--dark-brown);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;}
   select:focus{border-color:var(--accent)}
-  .refresh-btn{padding:0.6rem 1rem;border:1.5px solid var(--tan);border-radius:8px;background:white;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--brown);cursor:pointer;display:flex;align-items:center;gap:0.4rem;transition:all 0.15s;white-space:nowrap;}
-  .refresh-btn:hover{border-color:var(--accent);color:var(--accent);}
-  .refresh-btn svg{transition:transform 0.4s;}
-  .refresh-btn.spinning svg{animation:spin 0.8s linear infinite;}
+  .icon-btn{padding:0.6rem 1rem;border:1.5px solid var(--tan);border-radius:8px;background:white;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--brown);cursor:pointer;display:flex;align-items:center;gap:0.4rem;transition:all 0.15s;white-space:nowrap;}
+  .icon-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .icon-btn svg{transition:transform 0.4s;}
+  .icon-btn.spinning svg{animation:spin 0.8s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg)}}
   .count-badge{font-size:0.82rem;color:var(--muted);white-space:nowrap;margin-left:auto;}
 
+  /* USER CHIP */
+  .user-chip{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.85rem 0.4rem 0.4rem;border:1.5px solid var(--tan);border-radius:100px;background:white;font-size:0.82rem;color:var(--muted);}
+  .user-chip img{width:24px;height:24px;border-radius:50%;object-fit:cover;}
+  .user-chip span{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .signout-btn{background:none;border:none;font-size:0.8rem;color:var(--muted);cursor:pointer;padding:0;margin-left:0.25rem;opacity:0.6;}
+  .signout-btn:hover{opacity:1;color:var(--accent);}
+
+  /* TAG FILTERS */
   .tag-filters{background:var(--warm-white);border-bottom:1px solid var(--tan);padding:0.75rem 1.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;}
   .tag-filters span{font-size:0.8rem;color:var(--muted);margin-right:0.25rem;}
   .tag-btn{padding:0.35rem 0.85rem;border-radius:100px;border:1.5px solid var(--tan);background:white;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--brown);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
   .tag-btn:hover{border-color:var(--accent);color:var(--accent)}
   .tag-btn.active{background:var(--accent);border-color:var(--accent);color:white}
 
+  /* GRID */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;padding:1.5rem;max-width:1400px;margin:0 auto;}
 
+  /* CARD */
   .card{background:white;border-radius:var(--radius);overflow:hidden;border:1px solid var(--tan);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;display:flex;flex-direction:column;}
   .card:hover{transform:translateY(-3px);box-shadow:var(--card-shadow);}
   .card-img{width:100%;aspect-ratio:3/2;object-fit:cover;background:var(--tag-bg);display:block;flex-shrink:0;}
@@ -77,17 +88,15 @@
   .tag.breakfest,.tag.breakfast{background:#E8F5F0;color:#0A4A3A}
   .tag.dressing{background:#EEE8F0;color:#3A1A4A}
   .card-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--dark-brown);line-height:1.35;margin-bottom:0.35rem;}
-  .card-source{font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:0.3rem;}
+  .card-source{font-size:0.78rem;color:var(--muted);}
   .card-source a{color:var(--accent);text-decoration:none;}
   .card-source a:hover{text-decoration:underline}
 
-  /* Loading / error states */
-  .state-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;gap:1rem;grid-column:1/-1;}
+  /* STATE SCREENS */
+  .state-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;gap:1rem;grid-column:1/-1;text-align:center;}
   .spinner{width:40px;height:40px;border:3px solid var(--tan);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
   .state-screen p{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--brown);}
-  .state-screen small{font-size:0.85rem;color:var(--muted);max-width:400px;text-align:center;line-height:1.6;}
-  .error-icon{font-size:2.5rem;}
-
+  .state-screen small{font-size:0.85rem;color:var(--muted);max-width:400px;line-height:1.6;}
   .no-results{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--muted);}
   .no-results p:first-child{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--brown);margin-bottom:0.5rem;}
 
@@ -103,11 +112,11 @@
   .modal-body{padding:1.75rem}
   .modal-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.75rem}
   .modal-title{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:600;color:var(--dark-brown);line-height:1.25;margin-bottom:0.5rem;}
-  .modal-meta{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;}
+  .modal-meta{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;}
   .modal-meta a{color:var(--accent);text-decoration:none;}
   .modal-meta a:hover{text-decoration:underline}
   .modal-section{margin-bottom:1.5rem}
-  .modal-section h3{font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--tan);}
+  .modal-section h3{font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--tan);}
   .ingredients-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.35rem;}
   .ing-item{font-size:0.9rem;color:var(--dark-brown);padding:0.3rem 0;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4;}
   .ing-item::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:0.45rem;}
@@ -115,6 +124,8 @@
   .step-item{display:flex;gap:1rem;font-size:0.9rem;line-height:1.6;color:var(--dark-brown);}
   .step-num{width:26px;height:26px;border-radius:50%;background:var(--dark-brown);color:var(--cream);font-size:0.78rem;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.15rem;}
   .section-header{font-weight:500;color:var(--brown);font-size:0.9rem;margin-top:0.5rem;font-style:italic;}
+
+  .hidden{display:none!important;}
 
   @media(max-width:600px){
     .grid{grid-template-columns:1fr;padding:1rem}
@@ -130,84 +141,161 @@
 
 <header>
   <h1>My <em>Recipe Book</em></h1>
-  <p id="header-sub">Loading recipes from your spreadsheet…</p>
+  <p id="header-sub">Sign in to load your recipes</p>
 </header>
 
-<div class="controls">
-  <div class="search-wrap">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    <input type="text" id="search" placeholder="Search recipes or ingredients…" disabled>
-  </div>
-  <select id="sort" disabled>
-    <option value="default">Sort: Default</option>
-    <option value="az">A → Z</option>
-    <option value="za">Z → A</option>
-  </select>
-  <button class="refresh-btn" id="refresh-btn" title="Refresh from spreadsheet">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-    Refresh
+<!-- SIGN-IN SCREEN -->
+<div id="signin-screen">
+  <h2>Welcome back</h2>
+  <p>Sign in with your Google account to access your private recipe spreadsheet.</p>
+  <button class="google-btn" id="signin-btn">
+    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+    Sign in with Google
   </button>
-  <span class="count-badge" id="count-badge"></span>
 </div>
 
-<div class="tag-filters" id="tag-filters"><span>Loading…</span></div>
-
-<main class="grid" id="grid">
-  <div class="state-screen">
-    <div class="spinner"></div>
-    <p>Fetching your recipes…</p>
-    <small>Connecting to Google Sheets</small>
+<!-- APP (hidden until signed in) -->
+<div id="app-screen" class="hidden">
+  <div class="controls">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="search" placeholder="Search recipes or ingredients…">
+    </div>
+    <select id="sort">
+      <option value="default">Sort: Default</option>
+      <option value="az">A → Z</option>
+      <option value="za">Z → A</option>
+    </select>
+    <button class="icon-btn" id="refresh-btn" title="Refresh from spreadsheet">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+      Refresh
+    </button>
+    <div class="user-chip" id="user-chip" style="display:none">
+      <img id="user-avatar" src="" alt="">
+      <span id="user-name"></span>
+      <button class="signout-btn" id="signout-btn" title="Sign out">✕</button>
+    </div>
+    <span class="count-badge" id="count-badge"></span>
   </div>
-</main>
+
+  <div class="tag-filters" id="tag-filters"><span>Loading…</span></div>
+
+  <main class="grid" id="grid">
+    <div class="state-screen">
+      <div class="spinner"></div>
+      <p>Fetching your recipes…</p>
+    </div>
+  </main>
+</div>
 
 <div class="modal-overlay" id="modal-overlay">
-  <div class="modal" id="modal">
-    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+  <div class="modal">
+    <button class="modal-close" id="modal-close">✕</button>
     <div id="modal-content"></div>
   </div>
 </div>
 
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-const SHEET_ID = '1u-KWjdJA1B5aYH_8ZKPlZyaxliK87TrxUICADWnq80Y';
-const API_KEY  = 'REMOVED';
-const SHEET_NAME = 'Sheet1';
+const CLIENT_ID = '1052390457297-2apdv1m4cfdd730legvotk8k9stopmqg.apps.googleusercontent.com';
+const SHEET_ID  = '1u-KWjdJA1B5aYH_8ZKPlZyaxliK87TrxUICADWnq80Y';
+const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
 let RECIPES = [];
 let activeTag = 'All';
 let searchQuery = '';
 let sortMode = 'default';
+let tokenClient;
+let accessToken = null;
 
-// ---------- FETCH FROM SHEETS API ----------
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+
+function initGIS() {
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    callback: async (resp) => {
+      if (resp.error) { showError('Sign-in failed: ' + resp.error); return; }
+      accessToken = resp.access_token;
+      showApp();
+      await fetchRecipes();
+    }
+  });
+}
+
+document.getElementById('signin-btn').addEventListener('click', () => {
+  if (!tokenClient) { alert('Google sign-in is still loading. Please wait a moment and try again.'); return; }
+  tokenClient.requestAccessToken();
+});
+
+document.getElementById('signout-btn').addEventListener('click', () => {
+  if (accessToken) google.accounts.oauth2.revoke(accessToken, () => {});
+  accessToken = null;
+  RECIPES = [];
+  document.getElementById('app-screen').classList.add('hidden');
+  document.getElementById('signin-screen').classList.remove('hidden');
+  document.getElementById('header-sub').textContent = 'Sign in to load your recipes';
+  document.getElementById('user-chip').style.display = 'none';
+});
+
+function showApp() {
+  document.getElementById('signin-screen').classList.add('hidden');
+  document.getElementById('app-screen').classList.remove('hidden');
+}
+
+// Decode JWT to get user info from the ID token (optional — using tokenClient so we use userInfo endpoint)
+async function loadUserInfo() {
+  try {
+    const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    const u = await res.json();
+    document.getElementById('user-name').textContent = u.given_name || u.email;
+    document.getElementById('user-avatar').src = u.picture || '';
+    document.getElementById('user-chip').style.display = 'flex';
+    document.getElementById('header-sub').textContent = `Signed in as ${u.email}`;
+  } catch {}
+}
+
+// ── FETCH ─────────────────────────────────────────────────────────────────────
+
 async function fetchRecipes() {
   const grid = document.getElementById('grid');
   const btn  = document.getElementById('refresh-btn');
   btn.classList.add('spinning');
-  grid.innerHTML = `<div class="state-screen"><div class="spinner"></div><p>Fetching your recipes…</p><small>Connecting to Google Sheets</small></div>`;
-  document.getElementById('search').disabled = true;
-  document.getElementById('sort').disabled = true;
+  grid.innerHTML = `<div class="state-screen"><div class="spinner"></div><p>Fetching your recipes…</p></div>`;
 
-  const range = encodeURIComponent(`${SHEET_NAME}!A:F`);
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`;
+  const range = encodeURIComponent('Sheet1!A:F');
+  const url   = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}`;
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    // Token may have expired — prompt re-auth
+    if (res.status === 401) {
+      accessToken = null;
+      tokenClient.requestAccessToken();
+      return;
+    }
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || `HTTP ${res.status}`);
     }
+
     const data = await res.json();
     const rows = data.values || [];
     if (rows.length < 2) throw new Error('No recipe rows found in the sheet.');
 
-    // First row is headers; find column indexes
     const headers = rows[0].map(h => h.trim().toLowerCase());
     const col = name => headers.findIndex(h => h.includes(name));
-    const iDate  = col('date');
-    const iName  = col('recipe');
-    const iURL   = col('source');
-    const iIng   = col('ingredient');
-    const iTags  = col('tag');
-    const iImg   = col('image');
+    const iName = col('recipe');
+    const iURL  = col('source');
+    const iIng  = col('ingredient');
+    const iTags = col('tag');
+    const iImg  = col('image');
 
     RECIPES = [];
     for (let i = 1; i < rows.length; i++) {
@@ -215,60 +303,42 @@ async function fetchRecipes() {
       const get = idx => (idx >= 0 && idx < row.length) ? row[idx].trim() : '';
       const name = get(iName);
       if (!name) continue;
-
-      const raw = get(iIng);
-      const {ingredients, steps} = parseContent(raw);
-      const tags = get(iTags).split(',').map(t => t.trim()).filter(Boolean);
-      const image = get(iImg).replace(/&amp;/g,'&').split('?auto=')[0];
-
-      RECIPES.push({
-        title: name,
-        source: get(iURL),
-        image,
-        tags,
-        ingredients,
-        steps
-      });
+      const {ingredients, steps} = parseContent(get(iIng));
+      const tags  = get(iTags).split(',').map(t => t.trim()).filter(Boolean);
+      const image = get(iImg).replace(/&amp;/g, '&').split('?auto=')[0];
+      RECIPES.push({ title: name, source: get(iURL), image, tags, ingredients, steps });
     }
 
-    document.getElementById('search').disabled = false;
-    document.getElementById('sort').disabled = false;
-    document.getElementById('header-sub').textContent = `${RECIPES.length} recipes • last updated ${new Date().toLocaleTimeString()}`;
+    const ts = new Date().toLocaleTimeString();
+    document.getElementById('count-badge').textContent = '';
+    document.getElementById('header-sub').textContent = `${RECIPES.length} recipes · refreshed ${ts}`;
+    await loadUserInfo();
     buildTagFilters();
     render();
   } catch (e) {
-    grid.innerHTML = `<div class="state-screen">
-      <div class="error-icon">⚠️</div>
-      <p>Couldn't load recipes</p>
-      <small>${e.message}<br><br>Make sure the sheet is shared publicly and the API key is valid.</small>
-    </div>`;
-    document.getElementById('header-sub').textContent = 'Failed to load — check connection and try refreshing';
-    document.getElementById('tag-filters').innerHTML = '<span>—</span>';
+    grid.innerHTML = `<div class="state-screen"><p>⚠️ Couldn't load recipes</p><small>${e.message}</small></div>`;
   } finally {
     btn.classList.remove('spinning');
   }
 }
 
-// ---------- PARSE INGREDIENTS + STEPS ----------
-function parseContent(raw) {
-  const ingredients = [];
-  const steps = [];
-  if (!raw) return {ingredients, steps};
+// ── PARSE ─────────────────────────────────────────────────────────────────────
 
+function parseContent(raw) {
+  const ingredients = [], steps = [];
+  if (!raw) return { ingredients, steps };
   if (raw.includes('[INGREDIENTS]') && raw.includes('[STEPS]')) {
-    const ingPart   = raw.split('[INGREDIENTS]')[1].split('[STEPS]')[0];
-    const stepsPart = raw.split('[STEPS]')[1];
-    ingPart.split('\n').forEach(l => {
+    raw.split('[INGREDIENTS]')[1].split('[STEPS]')[0].split('\n').forEach(l => {
       const t = l.trim();
       if (t && !t.startsWith('[')) ingredients.push(t);
     });
-    stepsPart.split('\n').forEach(l => {
-      let t = l.trim().replace(/^\d+\.\s*/, '');
+    raw.split('[STEPS]')[1].split('\n').forEach(l => {
+      const t = l.trim().replace(/^\d+\.\s*/, '');
       if (t && t.length > 3 && t !== 'Watch' && !t.startsWith('Make the recipe with us')) steps.push(t);
     });
   } else if (raw.includes('[STEPS]')) {
     raw.split('[STEPS]')[1].split('\n').forEach(l => {
-      let t = l.trim().replace(/^\d+\.\s*/, '');
+      const t = l.trim().replace(/^\d+\.\s*/, '');
       if (t && t.length > 3) steps.push(t);
     });
   } else {
@@ -277,10 +347,31 @@ function parseContent(raw) {
       if (t && !t.startsWith('[')) ingredients.push(t);
     });
   }
-  return {ingredients, steps};
+  return { ingredients, steps };
 }
 
-// ---------- TAG FILTERS ----------
+// ── RENDER ────────────────────────────────────────────────────────────────────
+
+function tagClass(tag) {
+  return tag.toLowerCase().replace(/[éè]/g, 'e').replace(/[^a-z]/g, '');
+}
+
+function filteredRecipes() {
+  let list = RECIPES.map((r, i) => ({ ...r, origIdx: i }));
+  if (activeTag !== 'All') list = list.filter(r => r.tags.some(t => t.toLowerCase() === activeTag.toLowerCase()));
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(r =>
+      r.title.toLowerCase().includes(q) ||
+      r.ingredients.some(i => i.toLowerCase().includes(q)) ||
+      r.tags.some(t => t.toLowerCase().includes(q))
+    );
+  }
+  if (sortMode === 'az') list.sort((a, b) => a.title.localeCompare(b.title));
+  else if (sortMode === 'za') list.sort((a, b) => b.title.localeCompare(a.title));
+  return list;
+}
+
 function buildTagFilters() {
   const allTags = [...new Set(RECIPES.flatMap(r => r.tags))].sort();
   const container = document.getElementById('tag-filters');
@@ -297,86 +388,54 @@ function buildTagFilters() {
   });
 }
 
-// ---------- RENDER ----------
-function tagClass(tag) {
-  return tag.toLowerCase().replace(/[éè]/g,'e').replace(/[^a-z]/g,'');
-}
-
-function filteredRecipes() {
-  let list = RECIPES.map((r,i) => ({...r, origIdx: i}));
-  if (activeTag !== 'All') list = list.filter(r => r.tags.some(t => t.toLowerCase() === activeTag.toLowerCase()));
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    list = list.filter(r =>
-      r.title.toLowerCase().includes(q) ||
-      r.ingredients.some(i => i.toLowerCase().includes(q)) ||
-      r.tags.some(t => t.toLowerCase().includes(q))
-    );
-  }
-  if (sortMode === 'az') list.sort((a,b) => a.title.localeCompare(b.title));
-  else if (sortMode === 'za') list.sort((a,b) => b.title.localeCompare(a.title));
-  return list;
-}
-
 function render() {
   const list = filteredRecipes();
   const grid = document.getElementById('grid');
   document.getElementById('count-badge').textContent = `${list.length} recipe${list.length !== 1 ? 's' : ''}`;
-
   if (!list.length) {
     grid.innerHTML = `<div class="no-results"><p>Nothing found</p><p>Try a different search or filter.</p></div>`;
     return;
   }
-
   grid.innerHTML = list.map(r => {
     const tagHTML = r.tags.map(t => `<span class="tag ${tagClass(t)}">${t}</span>`).join('');
-    const imgHTML = r.image
-      ? `<img class="card-img" src="${r.image}" alt="${r.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-      : '';
-    const placeholder = `<div class="card-img-placeholder" style="${r.image ? 'display:none' : ''}">🍽️</div>`;
-    const srcHTML = r.source
-      ? `<a href="${r.source}" target="_blank" onclick="event.stopPropagation()">View original ↗</a>`
-      : `<span>Personal recipe</span>`;
+    const imgHTML = r.image ? `<img class="card-img" src="${r.image}" alt="${r.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : '';
+    const ph = `<div class="card-img-placeholder" style="${r.image ? 'display:none' : ''}">🍽️</div>`;
+    const src = r.source ? `<a href="${r.source}" target="_blank" onclick="event.stopPropagation()">View original ↗</a>` : '<span>Personal recipe</span>';
     return `<div class="card" data-idx="${r.origIdx}" tabindex="0" role="button" aria-label="Open ${r.title}">
-      ${imgHTML}${placeholder}
+      ${imgHTML}${ph}
       <div class="card-body">
         <div class="card-tags">${tagHTML}</div>
         <div class="card-title">${r.title}</div>
-        <div class="card-source">${srcHTML}</div>
+        <div class="card-source">${src}</div>
       </div>
     </div>`;
   }).join('');
-
   grid.querySelectorAll('.card').forEach(card => {
     const open = () => openModal(RECIPES[+card.dataset.idx]);
     card.addEventListener('click', open);
-    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }});
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });
 }
 
-// ---------- MODAL ----------
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+
 function openModal(r) {
   const tagHTML = r.tags.map(t => `<span class="tag ${tagClass(t)}">${t}</span>`).join('');
-  const srcLink = r.source ? `<a href="${r.source}" target="_blank">View original recipe ↗</a>` : '<span>Personal recipe</span>';
+  const src = r.source ? `<a href="${r.source}" target="_blank">View original recipe ↗</a>` : '<span>Personal recipe</span>';
 
-  // Group ingredients by section headers
   let ingHTML = '';
-  let section = {header: null, items: []};
-  const flushSection = () => {
+  let section = { header: null, items: [] };
+  const flush = () => {
     if (!section.items.length) return;
     if (section.header) ingHTML += `<p class="section-header">${section.header}</p>`;
     ingHTML += `<div class="ingredients-list">${section.items.map(i => `<div class="ing-item">${i}</div>`).join('')}</div>`;
-    section = {header: null, items: []};
+    section = { header: null, items: [] };
   };
   r.ingredients.forEach(line => {
-    if (line.endsWith(':') && line.length < 60 && !/^\d/.test(line)) {
-      flushSection();
-      section.header = line.replace(/:$/, '');
-    } else {
-      section.items.push(line);
-    }
+    if (line.endsWith(':') && line.length < 60 && !/^\d/.test(line)) { flush(); section.header = line.replace(/:$/, ''); }
+    else section.items.push(line);
   });
-  flushSection();
+  flush();
 
   let stepNum = 0;
   const stepsHTML = r.steps.map(s => {
@@ -385,16 +444,14 @@ function openModal(r) {
     return `<div class="step-item"><div class="step-num">${stepNum}</div><div>${s}</div></div>`;
   }).join('');
 
-  const imgHTML = r.image
-    ? `<img class="modal-img" src="${r.image}" alt="${r.title}" onerror="this.style.display='none'">`
-    : `<div class="modal-img-placeholder">🍽️</div>`;
+  const imgHTML = r.image ? `<img class="modal-img" src="${r.image}" alt="${r.title}" onerror="this.style.display='none'">` : `<div class="modal-img-placeholder">🍽️</div>`;
 
   document.getElementById('modal-content').innerHTML = `
     ${imgHTML}
     <div class="modal-body">
       <div class="modal-tags">${tagHTML}</div>
       <h2 class="modal-title">${r.title}</h2>
-      <div class="modal-meta">${srcLink}</div>
+      <div class="modal-meta">${src}</div>
       ${ingHTML ? `<div class="modal-section"><h3>Ingredients</h3>${ingHTML}</div>` : ''}
       ${stepsHTML ? `<div class="modal-section"><h3>Instructions</h3><div class="steps-list">${stepsHTML}</div></div>` : ''}
     </div>`;
@@ -408,7 +465,8 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
-// ---------- EVENT LISTENERS ----------
+// ── EVENTS ────────────────────────────────────────────────────────────────────
+
 document.getElementById('search').addEventListener('input', e => { searchQuery = e.target.value; render(); });
 document.getElementById('sort').addEventListener('change', e => { sortMode = e.target.value; render(); });
 document.getElementById('refresh-btn').addEventListener('click', fetchRecipes);
@@ -416,8 +474,12 @@ document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// ---------- INIT ----------
-fetchRecipes();
+// Init GIS once the library loads
+window.addEventListener('load', () => {
+  const wait = setInterval(() => {
+    if (window.google?.accounts?.oauth2) { clearInterval(wait); initGIS(); }
+  }, 100);
+});
 </script>
 </body>
 </html>
