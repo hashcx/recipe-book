@@ -439,7 +439,25 @@ async function fetchRecipes() {
     buildTagFilters();
     render();
   } catch (e) {
-    grid.innerHTML = `<div class="state-screen"><p>⚠️ Couldn't load recipes</p><small>${e.message}</small></div>`;
+    if (e instanceof AccessDeniedError) {
+      grid.innerHTML = `<div class="state-screen">
+        <div style="font-size:2.5rem">🔒</div>
+        <p>Access denied</p>
+        <small>
+          <strong>${e.email}</strong> does not have permission to view this recipe book.<br><br>
+          To get access, ask the owner to share the spreadsheet with your Google account,
+          or sign in with a different account.
+        </small>
+        <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
+          <button class="btn btn-secondary" onclick="document.getElementById('signout-btn').click()">
+            ↩ Switch account
+          </button>
+        </div>
+      </div>`;
+      document.getElementById('header-sub').textContent = 'Access denied for ' + e.email;
+    } else {
+      grid.innerHTML = `<div class="state-screen"><p>⚠️ Couldn't load recipes</p><small>${e.message}</small></div>`;
+    }
   } finally {
     btn.classList.remove('spinning');
   }
@@ -457,7 +475,18 @@ async function apiFetch(url, options = {}) {
     tokenClient.requestAccessToken({ prompt: 'select_account' });
     throw new Error('Session expired — please sign in again.');
   }
+  if (res.status === 403) {
+    const email = document.getElementById('user-name').textContent || 'your account';
+    throw new AccessDeniedError(email);
+  }
   return res;
+}
+
+class AccessDeniedError extends Error {
+  constructor(email) {
+    super('access_denied');
+    this.email = email;
+  }
 }
 
 // ── PARSE INGREDIENTS + STEPS ─────────────────────────────────────────────────
@@ -861,7 +890,11 @@ document.getElementById('f-save-btn').addEventListener('click', async () => {
     closeFormModal();
     await fetchRecipes();
   } catch (e) {
-    showToast(e.message, 'error');
+    if (e instanceof AccessDeniedError) {
+      showToast('Access denied — you do not have write permission to this sheet.', 'error');
+    } else {
+      showToast(e.message, 'error');
+    }
   } finally {
     btn.disabled = false;
     btn.textContent = 'Save to Sheet';
@@ -900,7 +933,11 @@ document.getElementById('f-delete-btn').addEventListener('click', async () => {
     closeFormModal();
     await fetchRecipes();
   } catch (e) {
-    showToast(e.message, 'error');
+    if (e instanceof AccessDeniedError) {
+      showToast('Access denied — you do not have write permission to this sheet.', 'error');
+    } else {
+      showToast(e.message, 'error');
+    }
   } finally {
     btn.disabled = false;
     btn.textContent = 'Delete recipe';
