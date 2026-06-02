@@ -8,132 +8,164 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --cream:#FDFAF5;--warm-white:#FAF7F0;--tan:#E8E0CC;--brown:#5C4A2A;
-    --dark-brown:#2E2416;--accent:#C2673A;--muted:#8A7A62;--tag-bg:#EDE8DF;
-    --card-shadow:0 2px 16px rgba(44,36,22,0.08);--radius:12px;
-  }
-  html{font-size:16px}
-  body{background:var(--cream);color:var(--dark-brown);font-family:'DM Sans',sans-serif;font-weight:400;min-height:100vh;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDFAF5;--warm-white:#FAF7F0;--tan:#E8E0CC;--brown:#5C4A2A;
+  --dark-brown:#2E2416;--accent:#C2673A;--accent-hover:#A8552E;--muted:#8A7A62;
+  --tag-bg:#EDE8DF;--card-shadow:0 2px 16px rgba(44,36,22,0.08);--radius:12px;
+  --danger:#B03030;--success:#2E6B3E;
+}
+html{font-size:16px}
+body{background:var(--cream);color:var(--dark-brown);font-family:'DM Sans',sans-serif;min-height:100vh;}
 
-  /* HEADER */
-  header{background:var(--dark-brown);padding:2.5rem 2rem 2rem;text-align:center;position:relative;overflow:hidden;}
-  header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
-  header h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:#FAF7F0;letter-spacing:-0.5px;position:relative;}
-  header h1 em{color:#C2673A;font-style:italic}
-  header p{color:#A89880;font-size:0.95rem;margin-top:0.5rem;position:relative;}
+/* ── HEADER ── */
+header{background:var(--dark-brown);padding:2rem 2rem 1.75rem;text-align:center;position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23fff' fill-opacity='.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+header h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);color:#FAF7F0;letter-spacing:-0.5px;position:relative;}
+header h1 em{color:#C2673A;font-style:italic}
+header p{color:#A89880;font-size:0.9rem;margin-top:0.4rem;position:relative;}
 
-  /* SIGN-IN SCREEN */
-  #signin-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:1.5rem;padding:3rem 2rem;text-align:center;}
-  #signin-screen h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--brown);}
-  #signin-screen p{font-size:0.95rem;color:var(--muted);max-width:360px;line-height:1.6;}
-  .google-btn{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1.5rem;background:white;border:1.5px solid var(--tan);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--dark-brown);cursor:pointer;transition:box-shadow 0.2s,border-color 0.2s;font-weight:500;}
-  .google-btn:hover{border-color:var(--accent);box-shadow:var(--card-shadow);}
-  .google-btn svg{flex-shrink:0;}
+/* ── SIGN-IN ── */
+#signin-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;gap:1.25rem;padding:3rem 2rem;text-align:center;}
+#signin-screen h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--brown);}
+#signin-screen p{font-size:0.92rem;color:var(--muted);max-width:340px;line-height:1.6;}
+.google-btn{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1.5rem;background:white;border:1.5px solid var(--tan);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--dark-brown);cursor:pointer;transition:box-shadow 0.2s,border-color 0.2s;font-weight:500;}
+.google-btn:hover{border-color:var(--accent);box-shadow:var(--card-shadow);}
 
-  /* CONTROLS */
-  .controls{background:var(--warm-white);border-bottom:1px solid var(--tan);padding:1rem 1.5rem;display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:100;}
-  .search-wrap{position:relative;flex:1;min-width:200px;}
-  .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
-  .search-wrap input{width:100%;padding:0.6rem 0.75rem 0.6rem 2.4rem;border:1.5px solid var(--tan);border-radius:8px;background:white;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--dark-brown);outline:none;transition:border-color 0.2s;}
-  .search-wrap input:focus{border-color:var(--accent)}
-  .search-wrap input::placeholder{color:var(--muted)}
-  select{padding:0.6rem 2rem 0.6rem 0.85rem;border:1.5px solid var(--tan);border-radius:8px;background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A7A62' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 6px center no-repeat;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--dark-brown);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;}
-  select:focus{border-color:var(--accent)}
-  .icon-btn{padding:0.6rem 1rem;border:1.5px solid var(--tan);border-radius:8px;background:white;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--brown);cursor:pointer;display:flex;align-items:center;gap:0.4rem;transition:all 0.15s;white-space:nowrap;}
-  .icon-btn:hover{border-color:var(--accent);color:var(--accent);}
-  .icon-btn svg{transition:transform 0.4s;}
-  .icon-btn.spinning svg{animation:spin 0.8s linear infinite;}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .count-badge{font-size:0.82rem;color:var(--muted);white-space:nowrap;margin-left:auto;}
+/* ── CONTROLS ── */
+.controls{background:var(--warm-white);border-bottom:1px solid var(--tan);padding:0.85rem 1.25rem;display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:100;}
+.search-wrap{position:relative;flex:1;min-width:180px;}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+.search-wrap input{width:100%;padding:0.55rem 0.75rem 0.55rem 2.2rem;border:1.5px solid var(--tan);border-radius:8px;background:white;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--dark-brown);outline:none;transition:border-color 0.2s;}
+.search-wrap input:focus{border-color:var(--accent)}
+.search-wrap input::placeholder{color:var(--muted)}
+select{padding:0.55rem 1.8rem 0.55rem 0.75rem;border:1.5px solid var(--tan);border-radius:8px;background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238A7A62' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 6px center no-repeat;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--dark-brown);outline:none;cursor:pointer;appearance:none;}
+.icon-btn{padding:0.55rem 0.9rem;border:1.5px solid var(--tan);border-radius:8px;background:white;font-family:'DM Sans',sans-serif;font-size:0.83rem;color:var(--brown);cursor:pointer;display:flex;align-items:center;gap:0.4rem;transition:all 0.15s;white-space:nowrap;}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent);}
+.icon-btn.primary{background:var(--accent);border-color:var(--accent);color:white;}
+.icon-btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:white;}
+.icon-btn svg{transition:transform 0.4s;}
+.icon-btn.spinning svg{animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.count-badge{font-size:0.8rem;color:var(--muted);white-space:nowrap;margin-left:auto;}
+.user-chip{display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0.7rem;border:1.5px solid var(--tan);border-radius:100px;background:white;font-size:0.8rem;color:var(--muted);}
+.user-chip span{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.signout-btn{background:none;border:none;font-size:0.75rem;color:var(--muted);cursor:pointer;padding:0 0 0 0.2rem;opacity:0.6;line-height:1;display:flex;align-items:center;gap:0.25rem;}
+.signout-btn:hover{opacity:1;color:var(--danger);}
 
-  /* USER CHIP */
-  .user-chip{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.75rem;border:1.5px solid var(--tan);border-radius:100px;background:white;font-size:0.82rem;color:var(--muted);}
-  .user-chip span{max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .signout-btn{background:none;border:none;font-size:0.75rem;color:var(--muted);cursor:pointer;padding:0;opacity:0.6;line-height:1;}
-  .signout-btn:hover{opacity:1;color:var(--accent);}
+/* ── TAG FILTERS ── */
+.tag-filters{background:var(--warm-white);border-bottom:1px solid var(--tan);padding:0.6rem 1.25rem;display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;}
+.tag-filters label{font-size:0.78rem;color:var(--muted);margin-right:0.25rem;white-space:nowrap;}
+.tag-btn{padding:0.28rem 0.75rem;border-radius:100px;border:1.5px solid var(--tan);background:white;font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--brown);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.tag-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tag-btn.active{background:var(--accent);border-color:var(--accent);color:white}
+.tag-btn.all-btn.active{background:var(--dark-brown);border-color:var(--dark-brown);}
 
-  /* TAG FILTERS */
-  .tag-filters{background:var(--warm-white);border-bottom:1px solid var(--tan);padding:0.75rem 1.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;}
-  .tag-filters span{font-size:0.8rem;color:var(--muted);margin-right:0.25rem;}
-  .tag-btn{padding:0.35rem 0.85rem;border-radius:100px;border:1.5px solid var(--tan);background:white;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--brown);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
-  .tag-btn:hover{border-color:var(--accent);color:var(--accent)}
-  .tag-btn.active{background:var(--accent);border-color:var(--accent);color:white}
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:1.25rem;max-width:1400px;margin:0 auto;}
 
-  /* GRID */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;padding:1.5rem;max-width:1400px;margin:0 auto;}
+/* ── CARD ── */
+.card{background:white;border-radius:var(--radius);overflow:hidden;border:1px solid var(--tan);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;display:flex;flex-direction:column;position:relative;}
+.card:hover{transform:translateY(-3px);box-shadow:var(--card-shadow);}
+.card-img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;flex-shrink:0;}
+.card-img-placeholder{width:100%;aspect-ratio:3/2;background:var(--tan);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0;}
+.card-body{padding:0.9rem;flex:1;display:flex;flex-direction:column;}
+.card-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.45rem;}
+.tag{font-size:0.7rem;padding:0.18rem 0.55rem;border-radius:100px;background:var(--tag-bg);color:var(--brown);font-weight:500;}
+.tag.salmon{background:#F0E8E0;color:#7A3E1A}.tag.sweet{background:#F5EAE0;color:#6B3A1A}
+.tag.entr-e,.tag.entree{background:#E8EFF0;color:#1A4A50}.tag.soups{background:#E8EDE0;color:#2A4A1A}
+.tag.bread{background:#F5F0E0;color:#5A4A0A}.tag.snack{background:#F0EAE8;color:#5A2A20}
+.tag.drink{background:#E8EDF5;color:#1A2A5A}.tag.salad{background:#E8F0E8;color:#1A4A1A}
+.tag.pasta{background:#F5EDE0;color:#6A3A0A}.tag.sauces{background:#EAEAEE;color:#2A2A4A}
+.tag.chicken{background:#F0EDE0;color:#4A3A0A}.tag.meat{background:#F0E8E8;color:#5A1A1A}
+.tag.breakfest,.tag.breakfast{background:#E8F5F0;color:#0A4A3A}.tag.dressing{background:#EEE8F0;color:#3A1A4A}
+.card-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:var(--dark-brown);line-height:1.3;margin-bottom:0.3rem;flex:1;}
+.card-source{font-size:0.75rem;color:var(--muted);}
+.card-source a{color:var(--accent);text-decoration:none;}
+.card-edit-btn{position:absolute;bottom:0.75rem;right:0.75rem;width:30px;height:30px;border-radius:50%;background:white;border:1.5px solid var(--tan);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.15s,border-color 0.15s;color:var(--muted);}
+.card:hover .card-edit-btn{opacity:1;}
+.card-edit-btn:hover{border-color:var(--accent);color:var(--accent);}
 
-  /* CARD */
-  .card{background:white;border-radius:var(--radius);overflow:hidden;border:1px solid var(--tan);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;display:flex;flex-direction:column;}
-  .card:hover{transform:translateY(-3px);box-shadow:var(--card-shadow);}
-  .card-img{width:100%;aspect-ratio:3/2;object-fit:cover;background:var(--tag-bg);display:block;flex-shrink:0;}
-  .card-img-placeholder{width:100%;aspect-ratio:3/2;background:var(--tan);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;}
-  .card-body{padding:1rem}
-  .card-tags{display:flex;gap:0.35rem;flex-wrap:wrap;margin-bottom:0.5rem;}
-  .tag{font-size:0.72rem;padding:0.2rem 0.6rem;border-radius:100px;background:var(--tag-bg);color:var(--brown);font-weight:500;letter-spacing:0.01em;}
-  .tag.salmon{background:#F0E8E0;color:#7A3E1A}
-  .tag.sweet{background:#F5EAE0;color:#6B3A1A}
-  .tag.entr-e,.tag.entree{background:#E8EFF0;color:#1A4A50}
-  .tag.soups{background:#E8EDE0;color:#2A4A1A}
-  .tag.bread{background:#F5F0E0;color:#5A4A0A}
-  .tag.snack{background:#F0EAE8;color:#5A2A20}
-  .tag.drink{background:#E8EDF5;color:#1A2A5A}
-  .tag.salad{background:#E8F0E8;color:#1A4A1A}
-  .tag.pasta{background:#F5EDE0;color:#6A3A0A}
-  .tag.sauces{background:#EAEAEE;color:#2A2A4A}
-  .tag.chicken{background:#F0EDE0;color:#4A3A0A}
-  .tag.meat{background:#F0E8E8;color:#5A1A1A}
-  .tag.breakfest,.tag.breakfast{background:#E8F5F0;color:#0A4A3A}
-  .tag.dressing{background:#EEE8F0;color:#3A1A4A}
-  .card-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--dark-brown);line-height:1.35;margin-bottom:0.35rem;}
-  .card-source{font-size:0.78rem;color:var(--muted);}
-  .card-source a{color:var(--accent);text-decoration:none;}
-  .card-source a:hover{text-decoration:underline}
+/* ── STATE SCREENS ── */
+.state-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;gap:1rem;grid-column:1/-1;text-align:center;}
+.spinner{width:38px;height:38px;border:3px solid var(--tan);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+.state-screen p{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--brown);}
+.state-screen small{font-size:0.83rem;color:var(--muted);max-width:380px;line-height:1.6;}
+.no-results{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--muted);}
+.no-results p:first-child{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--brown);margin-bottom:0.5rem;}
 
-  /* STATE SCREENS */
-  .state-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;gap:1rem;grid-column:1/-1;text-align:center;}
-  .spinner{width:40px;height:40px;border:3px solid var(--tan);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
-  .state-screen p{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--brown);}
-  .state-screen small{font-size:0.85rem;color:var(--muted);max-width:400px;line-height:1.6;}
-  .no-results{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--muted);}
-  .no-results p:first-child{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--brown);margin-bottom:0.5rem;}
+/* ── MODAL (shared) ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(20,14,6,0.65);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:1.5rem 1rem;overflow-y:auto;}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:16px;width:100%;max-width:680px;overflow:hidden;position:relative;margin:auto;animation:slideUp 0.22s ease;}
+@keyframes slideUp{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
+.modal-img{width:100%;max-height:300px;object-fit:cover;display:block;}
+.modal-img-placeholder{width:100%;height:180px;background:var(--tan);display:flex;align-items:center;justify-content:center;font-size:3.5rem;}
+.modal-close{position:absolute;top:0.85rem;right:0.85rem;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.92);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--dark-brown);}
+.modal-close:hover{background:white}
+.modal-body{padding:1.5rem}
+.modal-tags{display:flex;gap:0.35rem;flex-wrap:wrap;margin-bottom:0.65rem}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;line-height:1.2;margin-bottom:0.4rem;}
+.modal-meta{font-size:0.82rem;color:var(--muted);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;}
+.modal-meta a{color:var(--accent);text-decoration:none;}
+.modal-meta a:hover{text-decoration:underline}
+.modal-actions{display:flex;gap:0.5rem;margin-bottom:1.25rem;}
+.modal-section{margin-bottom:1.25rem}
+.modal-section h3{font-size:0.75rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.65rem;padding-bottom:0.45rem;border-bottom:1px solid var(--tan);}
+.ingredients-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.3rem;}
+.ing-item{font-size:0.88rem;padding:0.25rem 0;display:flex;align-items:flex-start;gap:0.45rem;line-height:1.4;}
+.ing-item::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:0.42rem;}
+.steps-list{display:flex;flex-direction:column;gap:0.75rem;}
+.step-item{display:flex;gap:0.85rem;font-size:0.88rem;line-height:1.6;}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--dark-brown);color:var(--cream);font-size:0.75rem;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.18rem;}
+.section-header{font-weight:500;color:var(--brown);font-size:0.88rem;margin-top:0.4rem;font-style:italic;}
 
-  /* MODAL */
-  .modal-overlay{position:fixed;inset:0;background:rgba(20,14,6,0.6);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;}
-  .modal-overlay.open{display:flex}
-  .modal{background:white;border-radius:16px;width:100%;max-width:700px;overflow:hidden;position:relative;margin:auto;animation:slideUp 0.25s ease;}
-  @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
-  .modal-img{width:100%;max-height:320px;object-fit:cover;display:block;}
-  .modal-img-placeholder{width:100%;height:200px;background:var(--tan);display:flex;align-items:center;justify-content:center;font-size:4rem;}
-  .modal-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--dark-brown);transition:background 0.15s;}
-  .modal-close:hover{background:white}
-  .modal-body{padding:1.75rem}
-  .modal-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.75rem}
-  .modal-title{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:600;color:var(--dark-brown);line-height:1.25;margin-bottom:0.5rem;}
-  .modal-meta{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;}
-  .modal-meta a{color:var(--accent);text-decoration:none;}
-  .modal-meta a:hover{text-decoration:underline}
-  .modal-section{margin-bottom:1.5rem}
-  .modal-section h3{font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--tan);}
-  .ingredients-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.35rem;}
-  .ing-item{font-size:0.9rem;color:var(--dark-brown);padding:0.3rem 0;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4;}
-  .ing-item::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:0.45rem;}
-  .steps-list{display:flex;flex-direction:column;gap:0.85rem;}
-  .step-item{display:flex;gap:1rem;font-size:0.9rem;line-height:1.6;color:var(--dark-brown);}
-  .step-num{width:26px;height:26px;border-radius:50%;background:var(--dark-brown);color:var(--cream);font-size:0.78rem;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.15rem;}
-  .section-header{font-weight:500;color:var(--brown);font-size:0.9rem;margin-top:0.5rem;font-style:italic;}
+/* ── EDIT / ADD FORM MODAL ── */
+#form-overlay{z-index:1100;}
+#form-modal{max-width:680px;}
+.form-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--tan);display:flex;align-items:center;justify-content:space-between;}
+.form-header h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--dark-brown);}
+.form-body{padding:1.5rem;display:flex;flex-direction:column;gap:1rem;max-height:75vh;overflow-y:auto;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;}
+.form-group{display:flex;flex-direction:column;gap:0.35rem;}
+.form-group.full{grid-column:1/-1;}
+.form-group label{font-size:0.78rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.form-group input,.form-group textarea,.form-group select{padding:0.6rem 0.75rem;border:1.5px solid var(--tan);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--dark-brown);outline:none;transition:border-color 0.2s;background:white;width:100%;}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--accent)}
+.form-group textarea{resize:vertical;min-height:100px;line-height:1.5;}
+.form-group small{font-size:0.76rem;color:var(--muted);line-height:1.4;}
+.form-footer{padding:1rem 1.5rem;border-top:1px solid var(--tan);display:flex;gap:0.6rem;justify-content:flex-end;align-items:center;}
+.btn{padding:0.6rem 1.2rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:all 0.15s;}
+.btn-primary{background:var(--accent);color:white;border-color:var(--accent);}
+.btn-primary:hover{background:var(--accent-hover);}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;}
+.btn-secondary{background:white;color:var(--brown);border-color:var(--tan);}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.btn-danger{background:white;color:var(--danger);border-color:#E0B0B0;}
+.btn-danger:hover{background:#FDF0F0;}
+.url-row{display:flex;gap:0.5rem;align-items:flex-end;}
+.url-row .form-group{flex:1}
+.url-row .btn{white-space:nowrap;height:fit-content;align-self:flex-end;}
+.scrape-status{font-size:0.8rem;padding:0.5rem 0.75rem;border-radius:6px;display:none;}
+.scrape-status.loading{display:block;background:#FFF8E0;color:#7A5A00;}
+.scrape-status.success{display:block;background:#E8F5E8;color:var(--success);}
+.scrape-status.error{display:block;background:#FDF0F0;color:var(--danger);}
 
-  .hidden{display:none!important;}
+/* ── TOAST ── */
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark-brown);color:white;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.85rem;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:2000;white-space:nowrap;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.success{background:var(--success);}
+#toast.error{background:var(--danger);}
 
-  @media(max-width:600px){
-    .grid{grid-template-columns:1fr;padding:1rem}
-    .controls{padding:0.75rem 1rem}
-    .tag-filters{padding:0.5rem 1rem}
-    .modal-body{padding:1.25rem}
-    .modal-title{font-size:1.4rem}
-    .ingredients-list{grid-template-columns:1fr}
-  }
+.hidden{display:none!important;}
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr;padding:1rem}
+  .controls{padding:0.65rem 0.9rem}
+  .form-row{grid-template-columns:1fr}
+  .modal-body{padding:1.1rem}
+  .modal-title{font-size:1.35rem}
+  .ingredients-list{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -146,18 +178,18 @@
 <!-- SIGN-IN SCREEN -->
 <div id="signin-screen">
   <h2>Welcome back</h2>
-  <p>Sign in with your Google account to access your private recipe spreadsheet.</p>
+  <p>Sign in with Google to access your private recipe spreadsheet.</p>
   <button class="google-btn" id="signin-btn">
-    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
     Sign in with Google
   </button>
 </div>
 
-<!-- APP (hidden until signed in) -->
+<!-- APP SCREEN -->
 <div id="app-screen" class="hidden">
   <div class="controls">
     <div class="search-wrap">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
       <input type="text" id="search" placeholder="Search recipes or ingredients…">
     </div>
     <select id="sort">
@@ -165,77 +197,144 @@
       <option value="az">A → Z</option>
       <option value="za">Z → A</option>
     </select>
+    <button class="icon-btn primary" id="add-btn" title="Add a new recipe">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add Recipe
+    </button>
     <button class="icon-btn" id="refresh-btn" title="Refresh from spreadsheet">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
       Refresh
     </button>
     <div class="user-chip" id="user-chip" style="display:none">
       <span id="user-name"></span>
-      <button class="signout-btn" id="signout-btn" title="Sign out">✕</button>
+      <button class="signout-btn" id="signout-btn" title="Sign out of your account">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign out
+      </button>
     </div>
     <span class="count-badge" id="count-badge"></span>
   </div>
 
-  <div class="tag-filters" id="tag-filters"><span>Loading…</span></div>
+  <div class="tag-filters" id="tag-filters"><label>Filter:</label></div>
 
   <main class="grid" id="grid">
-    <div class="state-screen">
-      <div class="spinner"></div>
-      <p>Fetching your recipes…</p>
-    </div>
+    <div class="state-screen"><div class="spinner"></div><p>Fetching your recipes…</p></div>
   </main>
 </div>
 
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <button class="modal-close" id="modal-close">✕</button>
-    <div id="modal-content"></div>
+<!-- VIEW MODAL -->
+<div class="modal-overlay" id="view-overlay">
+  <div class="modal" id="view-modal">
+    <button class="modal-close" id="view-close">✕</button>
+    <div id="view-content"></div>
   </div>
 </div>
 
-<!-- Google Identity Services -->
+<!-- EDIT / ADD FORM MODAL -->
+<div class="modal-overlay" id="form-overlay">
+  <div class="modal" id="form-modal">
+    <div class="form-header">
+      <h2 id="form-title">Add Recipe</h2>
+      <button class="modal-close" id="form-close">✕</button>
+    </div>
+    <div class="form-body">
+      <!-- URL scraper row -->
+      <div>
+        <div class="url-row">
+          <div class="form-group">
+            <label>Import from URL (optional)</label>
+            <input type="url" id="f-url-input" placeholder="https://cooking.nytimes.com/recipes/…">
+          </div>
+          <button class="btn btn-secondary" id="f-scrape-btn">Fetch</button>
+        </div>
+        <div id="scrape-status" class="scrape-status"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Recipe Name *</label>
+          <input type="text" id="f-name" placeholder="e.g. Lemon Garlic Pasta">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Source URL</label>
+          <input type="url" id="f-source" placeholder="https://…">
+        </div>
+        <div class="form-group">
+          <label>Image URL</label>
+          <input type="url" id="f-image" placeholder="https://…">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" id="f-tags" placeholder="Entrée, Pasta, Chicken  (comma-separated)">
+        <small>Separate multiple tags with commas</small>
+      </div>
+      <div class="form-group">
+        <label>Ingredients</label>
+        <textarea id="f-ingredients" placeholder="One ingredient per line&#10;e.g.&#10;2 cups all-purpose flour&#10;1 tsp salt&#10;3 large eggs"></textarea>
+        <small>One ingredient per line. Use a line ending with a colon as a section header, e.g. "For the sauce:"</small>
+      </div>
+      <div class="form-group">
+        <label>Steps</label>
+        <textarea id="f-steps" placeholder="One step per line&#10;e.g.&#10;Bring a large pot of salted water to a boil.&#10;Cook pasta until al dente, about 8 minutes."></textarea>
+        <small>One step per line. Numbering is added automatically.</small>
+      </div>
+    </div>
+    <div class="form-footer">
+      <button class="btn btn-danger hidden" id="f-delete-btn">Delete recipe</button>
+      <button class="btn btn-secondary" id="f-cancel-btn">Cancel</button>
+      <button class="btn btn-primary" id="f-save-btn">Save to Sheet</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://apis.google.com/js/api.js" async defer></script>
 <script>
-const CLIENT_ID = '1052390457297-2apdv1m4cfdd730legvotk8k9stopmqg.apps.googleusercontent.com';
-const SHEET_ID  = '1u-KWjdJA1B5aYH_8ZKPlZyaxliK87TrxUICADWnq80Y';
-const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const CLIENT_ID  = '1052390457297-2apdv1m4cfdd730legvotk8k9stopmqg.apps.googleusercontent.com';
+const SHEET_ID   = '1u-KWjdJA1B5aYH_8ZKPlZyaxliK87TrxUICADWnq80Y';
+const SCOPES     = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file email profile';
+const TOKEN_KEY  = 'rb_token';
+const EXPIRY_KEY = 'rb_expiry';
+const SHEET_NAME = 'Sheet1';
 
-let RECIPES = [];
-let activeTag = 'All';
-let searchQuery = '';
-let sortMode = 'default';
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let RECIPES      = [];
+let activeTags   = new Set();   // multi-tag filter
+let searchQuery  = '';
+let sortMode     = 'default';
 let tokenClient;
-let accessToken = null;
+let accessToken  = null;
+let editingIdx   = null;        // null = adding new, number = editing existing
+let colMap       = {};          // column name → index
 
-const TOKEN_KEY   = 'rb_access_token';
-const EXPIRY_KEY  = 'rb_token_expiry';
-
-function saveToken(token, expiresIn) {
-  const expiry = Date.now() + (expiresIn - 60) * 1000; // subtract 60s buffer
-  localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(EXPIRY_KEY, expiry.toString());
+// ── TOKEN PERSISTENCE ─────────────────────────────────────────────────────────
+function saveToken(t, exp) {
+  localStorage.setItem(TOKEN_KEY,  t);
+  localStorage.setItem(EXPIRY_KEY, (Date.now() + (exp - 60) * 1000).toString());
 }
-
 function loadToken() {
-  const token  = localStorage.getItem(TOKEN_KEY);
-  const expiry = parseInt(localStorage.getItem(EXPIRY_KEY) || '0');
-  if (token && Date.now() < expiry) return token;
-  return null;
+  const t = localStorage.getItem(TOKEN_KEY);
+  const e = parseInt(localStorage.getItem(EXPIRY_KEY) || '0');
+  return (t && Date.now() < e) ? t : null;
 }
-
 function clearToken() {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(EXPIRY_KEY);
 }
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
-
 function initGIS() {
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
     scope: SCOPES,
     callback: async (resp) => {
-      if (resp.error) { return; }
+      if (resp.error) { showToast('Sign-in failed: ' + resp.error, 'error'); return; }
       accessToken = resp.access_token;
       saveToken(accessToken, resp.expires_in || 3600);
       showApp();
@@ -243,18 +342,35 @@ function initGIS() {
     }
   });
 
-  // Try to reuse a saved token silently on page load
+  // Try saved token first
   const saved = loadToken();
   if (saved) {
     accessToken = saved;
     showApp();
     fetchRecipes();
+  } else {
+    // Silent re-auth — no popup if user is still signed into Google
+    silentAuth();
   }
 }
 
+function silentAuth() {
+  if (!tokenClient) return;
+  try {
+    tokenClient.requestAccessToken({ prompt: '' });
+  } catch {
+    // Silent auth not possible — show sign-in screen
+  }
+}
+
+function showApp() {
+  document.getElementById('signin-screen').classList.add('hidden');
+  document.getElementById('app-screen').classList.remove('hidden');
+}
+
 document.getElementById('signin-btn').addEventListener('click', () => {
-  if (!tokenClient) { alert('Google sign-in is still loading. Please try again in a moment.'); return; }
-  tokenClient.requestAccessToken();
+  if (!tokenClient) { showToast('Still loading — please wait a moment', 'error'); return; }
+  tokenClient.requestAccessToken({ prompt: 'select_account' });
 });
 
 document.getElementById('signout-btn').addEventListener('click', () => {
@@ -264,83 +380,61 @@ document.getElementById('signout-btn').addEventListener('click', () => {
   RECIPES = [];
   document.getElementById('app-screen').classList.add('hidden');
   document.getElementById('signin-screen').classList.remove('hidden');
-  document.getElementById('header-sub').textContent = 'Sign in to load your recipes';
   document.getElementById('user-chip').style.display = 'none';
+  document.getElementById('header-sub').textContent = 'Sign in to load your recipes';
 });
 
-function showApp() {
-  document.getElementById('signin-screen').classList.add('hidden');
-  document.getElementById('app-screen').classList.remove('hidden');
-}
-
-// Decode JWT to get user info from the ID token (optional — using tokenClient so we use userInfo endpoint)
 async function loadUserInfo() {
   try {
     const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
       headers: { Authorization: `Bearer ${accessToken}` }
     });
     const u = await res.json();
-    document.getElementById('user-name').textContent = u.given_name || u.email;
+    const name  = u.given_name || u.name || u.email || 'You';
+    const email = u.email || '';
+    document.getElementById('user-name').textContent = name;
     document.getElementById('user-chip').style.display = 'flex';
-    document.getElementById('header-sub').textContent = `Signed in as ${u.email}`;
+    document.getElementById('header-sub').textContent =
+      `${RECIPES.length} recipe${RECIPES.length !== 1 ? 's' : ''} · ${email}`;
   } catch {}
 }
 
-// ── FETCH ─────────────────────────────────────────────────────────────────────
-
+// ── FETCH FROM SHEET ──────────────────────────────────────────────────────────
 async function fetchRecipes() {
   const grid = document.getElementById('grid');
   const btn  = document.getElementById('refresh-btn');
   btn.classList.add('spinning');
   grid.innerHTML = `<div class="state-screen"><div class="spinner"></div><p>Fetching your recipes…</p></div>`;
 
-  const range = encodeURIComponent('Sheet1!A:F');
-  const url   = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}`;
-
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(SHEET_NAME + '!A:F')}`;
   try {
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
-
-    // Token expired — clear it and prompt re-auth
-    if (res.status === 401) {
-      accessToken = null;
-      clearToken();
-      tokenClient.requestAccessToken();
-      return;
-    }
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error?.message || `HTTP ${res.status}`);
-    }
-
+    const res = await apiFetch(url);
     const data = await res.json();
     const rows = data.values || [];
     if (rows.length < 2) throw new Error('No recipe rows found in the sheet.');
 
     const headers = rows[0].map(h => h.trim().toLowerCase());
     const col = name => headers.findIndex(h => h.includes(name));
-    const iName = col('recipe');
-    const iURL  = col('source');
-    const iIng  = col('ingredient');
-    const iTags = col('tag');
-    const iImg  = col('image');
+    colMap = { name: col('recipe'), source: col('source'), ing: col('ingredient'), tags: col('tag'), img: col('image') };
 
     RECIPES = [];
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
       const get = idx => (idx >= 0 && idx < row.length) ? row[idx].trim() : '';
-      const name = get(iName);
+      const name = get(colMap.name);
       if (!name) continue;
-      const {ingredients, steps} = parseContent(get(iIng));
-      const tags  = get(iTags).split(',').map(t => t.trim()).filter(Boolean);
-      const image = get(iImg).replace(/&amp;/g, '&').split('?auto=')[0];
-      RECIPES.push({ title: name, source: get(iURL), image, tags, ingredients, steps });
+      const { ingredients, steps } = parseContent(get(colMap.ing));
+      RECIPES.push({
+        rowIndex: i + 1,   // 1-based sheet row
+        title:    name,
+        source:   get(colMap.source),
+        image:    get(colMap.img).replace(/&amp;/g, '&').split('?auto=')[0],
+        tags:     get(colMap.tags).split(',').map(t => t.trim()).filter(Boolean),
+        ingredients,
+        steps
+      });
     }
 
-    const ts = new Date().toLocaleTimeString();
-    document.getElementById('count-badge').textContent = '';
-    document.getElementById('header-sub').textContent = `${RECIPES.length} recipes · refreshed ${ts}`;
     await loadUserInfo();
     buildTagFilters();
     render();
@@ -351,8 +445,22 @@ async function fetchRecipes() {
   }
 }
 
-// ── PARSE ─────────────────────────────────────────────────────────────────────
+// ── API FETCH WRAPPER (handles 401) ───────────────────────────────────────────
+async function apiFetch(url, options = {}) {
+  const res = await fetch(url, {
+    ...options,
+    headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json', ...(options.headers || {}) }
+  });
+  if (res.status === 401) {
+    clearToken();
+    accessToken = null;
+    tokenClient.requestAccessToken({ prompt: 'select_account' });
+    throw new Error('Session expired — please sign in again.');
+  }
+  return res;
+}
 
+// ── PARSE INGREDIENTS + STEPS ─────────────────────────────────────────────────
 function parseContent(raw) {
   const ingredients = [], steps = [];
   if (!raw) return { ingredients, steps };
@@ -365,11 +473,6 @@ function parseContent(raw) {
       const t = l.trim().replace(/^\d+\.\s*/, '');
       if (t && t.length > 3 && t !== 'Watch' && !t.startsWith('Make the recipe with us')) steps.push(t);
     });
-  } else if (raw.includes('[STEPS]')) {
-    raw.split('[STEPS]')[1].split('\n').forEach(l => {
-      const t = l.trim().replace(/^\d+\.\s*/, '');
-      if (t && t.length > 3) steps.push(t);
-    });
   } else {
     raw.split('\n').forEach(l => {
       const t = l.trim();
@@ -379,15 +482,49 @@ function parseContent(raw) {
   return { ingredients, steps };
 }
 
-// ── RENDER ────────────────────────────────────────────────────────────────────
+function serializeContent(ingredients, steps) {
+  const ingText  = ingredients.filter(Boolean).join('\n');
+  const stepText = steps.filter(Boolean).map((s, i) => `${i + 1}. ${s}`).join('\n');
+  return `[INGREDIENTS]\n${ingText}\n\n[STEPS]\n${stepText}`;
+}
 
+// ── TAG FILTERS (multi-select) ────────────────────────────────────────────────
+function buildTagFilters() {
+  const allTags = [...new Set(RECIPES.flatMap(r => r.tags))].sort();
+  const container = document.getElementById('tag-filters');
+  container.innerHTML = '<label>Filter:</label>' +
+    `<button class="tag-btn all-btn${activeTags.size === 0 ? ' active' : ''}" data-tag="__all__">All</button>` +
+    allTags.map(t =>
+      `<button class="tag-btn${activeTags.has(t) ? ' active' : ''}" data-tag="${t}">${t}</button>`
+    ).join('');
+
+  container.querySelectorAll('.tag-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const t = btn.dataset.tag;
+      if (t === '__all__') {
+        activeTags.clear();
+      } else {
+        if (activeTags.has(t)) activeTags.delete(t);
+        else activeTags.add(t);
+      }
+      // Update active states
+      container.querySelectorAll('.tag-btn').forEach(b => {
+        if (b.dataset.tag === '__all__') b.classList.toggle('active', activeTags.size === 0);
+        else b.classList.toggle('active', activeTags.has(b.dataset.tag));
+      });
+      render();
+    });
+  });
+}
+
+// ── RENDER GRID ───────────────────────────────────────────────────────────────
 function tagClass(tag) {
   return tag.toLowerCase().replace(/[éè]/g, 'e').replace(/[^a-z]/g, '');
 }
 
 function filteredRecipes() {
   let list = RECIPES.map((r, i) => ({ ...r, origIdx: i }));
-  if (activeTag !== 'All') list = list.filter(r => r.tags.some(t => t.toLowerCase() === activeTag.toLowerCase()));
+  if (activeTags.size > 0) list = list.filter(r => [...activeTags].every(at => r.tags.some(t => t.toLowerCase() === at.toLowerCase())));
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
     list = list.filter(r =>
@@ -399,22 +536,6 @@ function filteredRecipes() {
   if (sortMode === 'az') list.sort((a, b) => a.title.localeCompare(b.title));
   else if (sortMode === 'za') list.sort((a, b) => b.title.localeCompare(a.title));
   return list;
-}
-
-function buildTagFilters() {
-  const allTags = [...new Set(RECIPES.flatMap(r => r.tags))].sort();
-  const container = document.getElementById('tag-filters');
-  container.innerHTML = '<span>Filter:</span>' + ['All', ...allTags].map(t =>
-    `<button class="tag-btn${t === activeTag ? ' active' : ''}" data-tag="${t}">${t}</button>`
-  ).join('');
-  container.querySelectorAll('.tag-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      activeTag = btn.dataset.tag;
-      container.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      render();
-    });
-  });
 }
 
 function render() {
@@ -437,73 +558,297 @@ function render() {
         <div class="card-title">${r.title}</div>
         <div class="card-source">${src}</div>
       </div>
+      <button class="card-edit-btn" data-edit="${r.origIdx}" title="Edit recipe" onclick="event.stopPropagation();openEditForm(${r.origIdx})">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
     </div>`;
   }).join('');
+
   grid.querySelectorAll('.card').forEach(card => {
-    const open = () => openModal(RECIPES[+card.dataset.idx]);
-    card.addEventListener('click', open);
-    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    card.addEventListener('click', () => openViewModal(RECIPES[+card.dataset.idx]));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openViewModal(RECIPES[+card.dataset.idx]); } });
   });
 }
 
-// ── MODAL ─────────────────────────────────────────────────────────────────────
-
-function openModal(r) {
+// ── VIEW MODAL ────────────────────────────────────────────────────────────────
+function openViewModal(r) {
   const tagHTML = r.tags.map(t => `<span class="tag ${tagClass(t)}">${t}</span>`).join('');
-  const src = r.source ? `<a href="${r.source}" target="_blank">View original recipe ↗</a>` : '<span>Personal recipe</span>';
+  const src = r.source ? `<a href="${r.source}" target="_blank">View original ↗</a>` : '<span>Personal recipe</span>';
 
   let ingHTML = '';
-  let section = { header: null, items: [] };
+  let sec = { header: null, items: [] };
   const flush = () => {
-    if (!section.items.length) return;
-    if (section.header) ingHTML += `<p class="section-header">${section.header}</p>`;
-    ingHTML += `<div class="ingredients-list">${section.items.map(i => `<div class="ing-item">${i}</div>`).join('')}</div>`;
-    section = { header: null, items: [] };
+    if (!sec.items.length) return;
+    if (sec.header) ingHTML += `<p class="section-header">${sec.header}</p>`;
+    ingHTML += `<div class="ingredients-list">${sec.items.map(i => `<div class="ing-item">${i}</div>`).join('')}</div>`;
+    sec = { header: null, items: [] };
   };
-  r.ingredients.forEach(line => {
-    if (line.endsWith(':') && line.length < 60 && !/^\d/.test(line)) { flush(); section.header = line.replace(/:$/, ''); }
-    else section.items.push(line);
+  (r.ingredients || []).forEach(line => {
+    if (line.endsWith(':') && line.length < 60 && !/^\d/.test(line)) { flush(); sec.header = line.replace(/:$/, ''); }
+    else sec.items.push(line);
   });
   flush();
 
   let stepNum = 0;
-  const stepsHTML = r.steps.map(s => {
+  const stepsHTML = (r.steps || []).map(s => {
     if (s.endsWith(':') && s.length < 60 && !/^[a-z]/.test(s)) return `<p class="section-header">${s.replace(/:$/, '')}</p>`;
     stepNum++;
     return `<div class="step-item"><div class="step-num">${stepNum}</div><div>${s}</div></div>`;
   }).join('');
 
+  const origIdx = RECIPES.indexOf(r);
   const imgHTML = r.image ? `<img class="modal-img" src="${r.image}" alt="${r.title}" onerror="this.style.display='none'">` : `<div class="modal-img-placeholder">🍽️</div>`;
 
-  document.getElementById('modal-content').innerHTML = `
+  document.getElementById('view-content').innerHTML = `
     ${imgHTML}
     <div class="modal-body">
       <div class="modal-tags">${tagHTML}</div>
       <h2 class="modal-title">${r.title}</h2>
-      <div class="modal-meta">${src}</div>
+      <div class="modal-meta">
+        ${src}
+        <button class="btn btn-secondary" style="padding:0.3rem 0.75rem;font-size:0.8rem;" onclick="closeViewModal();openEditForm(${origIdx})">✏️ Edit</button>
+      </div>
       ${ingHTML ? `<div class="modal-section"><h3>Ingredients</h3>${ingHTML}</div>` : ''}
       ${stepsHTML ? `<div class="modal-section"><h3>Instructions</h3><div class="steps-list">${stepsHTML}</div></div>` : ''}
     </div>`;
 
-  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('view-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
+function closeViewModal() {
+  document.getElementById('view-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
 
-// ── EVENTS ────────────────────────────────────────────────────────────────────
+// ── EDIT / ADD FORM ───────────────────────────────────────────────────────────
+function openAddForm() {
+  editingIdx = null;
+  document.getElementById('form-title').textContent = 'Add Recipe';
+  document.getElementById('f-delete-btn').classList.add('hidden');
+  clearForm();
+  document.getElementById('form-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
+function openEditForm(idx) {
+  editingIdx = idx;
+  const r = RECIPES[idx];
+  document.getElementById('form-title').textContent = 'Edit Recipe';
+  document.getElementById('f-delete-btn').classList.remove('hidden');
+  document.getElementById('f-name').value        = r.title || '';
+  document.getElementById('f-source').value      = r.source || '';
+  document.getElementById('f-image').value       = r.image || '';
+  document.getElementById('f-tags').value        = (r.tags || []).join(', ');
+  document.getElementById('f-ingredients').value = (r.ingredients || []).join('\n');
+  document.getElementById('f-steps').value       = (r.steps || []).join('\n');
+  document.getElementById('f-url-input').value   = r.source || '';
+  hideScrapeStatus();
+  document.getElementById('form-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFormModal() {
+  document.getElementById('form-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function clearForm() {
+  ['f-url-input','f-name','f-source','f-image','f-tags','f-ingredients','f-steps'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  hideScrapeStatus();
+}
+
+// ── URL SCRAPER ───────────────────────────────────────────────────────────────
+document.getElementById('f-scrape-btn').addEventListener('click', async () => {
+  const url = document.getElementById('f-url-input').value.trim();
+  if (!url) { showScrapeStatus('Please enter a URL first', 'error'); return; }
+
+  showScrapeStatus('Fetching recipe…', 'loading');
+  document.getElementById('f-scrape-btn').disabled = true;
+
+  try {
+    // Use allorigins.win as a CORS proxy to fetch the page
+    const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    const res = await fetch(proxy);
+    const data = await res.json();
+    const html = data.contents;
+
+    if (!html) throw new Error('Could not fetch the page.');
+
+    const scraped = scrapeRecipeFromHTML(html, url);
+
+    if (scraped.name)        document.getElementById('f-name').value        = scraped.name;
+    if (scraped.image)       document.getElementById('f-image').value       = scraped.image;
+    if (scraped.source)      document.getElementById('f-source').value      = scraped.source;
+    if (scraped.ingredients) document.getElementById('f-ingredients').value  = scraped.ingredients;
+    if (scraped.steps)       document.getElementById('f-steps').value       = scraped.steps;
+
+    const filled = [scraped.name, scraped.ingredients, scraped.steps].filter(Boolean).length;
+    if (filled >= 2) {
+      showScrapeStatus('Recipe imported! Review and edit the details below before saving.', 'success');
+    } else {
+      showScrapeStatus('Partially imported — the page may use a non-standard format. Please fill in any missing fields.', 'error');
+    }
+  } catch (e) {
+    showScrapeStatus('Could not scrape this page: ' + e.message, 'error');
+  } finally {
+    document.getElementById('f-scrape-btn').disabled = false;
+  }
+});
+
+function scrapeRecipeFromHTML(html, url) {
+  const result = { source: url };
+
+  // Try JSON-LD structured data first (most reliable)
+  const ldMatches = html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
+  for (const m of ldMatches) {
+    try {
+      const json = JSON.parse(m[1]);
+      const schemas = Array.isArray(json) ? json : (json['@graph'] || [json]);
+      for (const s of schemas) {
+        if (s['@type'] === 'Recipe' || (Array.isArray(s['@type']) && s['@type'].includes('Recipe'))) {
+          result.name = s.name || '';
+          result.image = Array.isArray(s.image) ? (s.image[0]?.url || s.image[0]) : (s.image?.url || s.image || '');
+          if (s.recipeIngredient) result.ingredients = s.recipeIngredient.join('\n');
+          if (s.recipeInstructions) {
+            const steps = Array.isArray(s.recipeInstructions)
+              ? s.recipeInstructions.map(i => typeof i === 'string' ? i : (i.text || '')).filter(Boolean)
+              : [s.recipeInstructions];
+            result.steps = steps.join('\n');
+          }
+          return result;
+        }
+      }
+    } catch {}
+  }
+
+  // Fallback: try Open Graph / meta tags for name and image
+  const ogTitle = html.match(/<meta[^>]*property=["']og:title["'][^>]*content=["']([^"']+)["']/i);
+  const ogImage = html.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["']/i);
+  if (ogTitle) result.name  = ogTitle[1];
+  if (ogImage) result.image = ogImage[1];
+
+  return result;
+}
+
+function showScrapeStatus(msg, type) {
+  const el = document.getElementById('scrape-status');
+  el.textContent = msg;
+  el.className = `scrape-status ${type}`;
+}
+function hideScrapeStatus() {
+  document.getElementById('scrape-status').className = 'scrape-status';
+}
+
+// ── SAVE TO SHEET ─────────────────────────────────────────────────────────────
+document.getElementById('f-save-btn').addEventListener('click', async () => {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { showToast('Recipe name is required', 'error'); return; }
+
+  const btn = document.getElementById('f-save-btn');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  const now         = new Date().toLocaleString();
+  const source      = document.getElementById('f-source').value.trim();
+  const image       = document.getElementById('f-image').value.trim();
+  const tagsRaw     = document.getElementById('f-tags').value.trim();
+  const ingsRaw     = document.getElementById('f-ingredients').value.trim().split('\n').filter(Boolean);
+  const stepsRaw    = document.getElementById('f-steps').value.trim().split('\n').filter(Boolean);
+  const content     = serializeContent(ingsRaw, stepsRaw);
+  const rowValues   = [now, name, source, content, tagsRaw, image];
+
+  try {
+    if (editingIdx === null) {
+      // APPEND new row
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(SHEET_NAME + '!A:F')}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
+      const res = await apiFetch(url, { method: 'POST', body: JSON.stringify({ values: [rowValues] }) });
+      if (!res.ok) throw new Error((await res.json()).error?.message || 'Failed to save');
+      showToast('Recipe added! 🎉', 'success');
+    } else {
+      // UPDATE existing row
+      const sheetRow = RECIPES[editingIdx].rowIndex;
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(SHEET_NAME + '!A' + sheetRow + ':F' + sheetRow)}?valueInputOption=RAW`;
+      const res = await apiFetch(url, { method: 'PUT', body: JSON.stringify({ values: [rowValues] }) });
+      if (!res.ok) throw new Error((await res.json()).error?.message || 'Failed to save');
+      showToast('Recipe updated!', 'success');
+    }
+    closeFormModal();
+    await fetchRecipes();
+  } catch (e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Save to Sheet';
+  }
+});
+
+// ── DELETE FROM SHEET ─────────────────────────────────────────────────────────
+document.getElementById('f-delete-btn').addEventListener('click', async () => {
+  if (editingIdx === null) return;
+  const r = RECIPES[editingIdx];
+  if (!confirm(`Delete "${r.title}"? This cannot be undone.`)) return;
+
+  const btn = document.getElementById('f-delete-btn');
+  btn.disabled = true;
+  btn.textContent = 'Deleting…';
+
+  try {
+    // Get spreadsheet metadata to find the sheet ID (not SHEET_ID which is the spreadsheet ID)
+    const metaRes = await apiFetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`);
+    const meta    = await metaRes.json();
+    const sheetGid = meta.sheets[0].properties.sheetId;
+
+    const sheetRow = r.rowIndex - 1; // 0-based
+    const body = {
+      requests: [{
+        deleteDimension: {
+          range: { sheetId: sheetGid, dimension: 'ROWS', startIndex: sheetRow, endIndex: sheetRow + 1 }
+        }
+      }]
+    };
+    const res = await apiFetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`, {
+      method: 'POST', body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error((await res.json()).error?.message || 'Failed to delete');
+    showToast(`"${r.title}" deleted`, 'success');
+    closeFormModal();
+    await fetchRecipes();
+  } catch (e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Delete recipe';
+  }
+});
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = ''; }, 3000);
+}
+
+// ── EVENTS ────────────────────────────────────────────────────────────────────
 document.getElementById('search').addEventListener('input', e => { searchQuery = e.target.value; render(); });
 document.getElementById('sort').addEventListener('change', e => { sortMode = e.target.value; render(); });
 document.getElementById('refresh-btn').addEventListener('click', fetchRecipes);
-document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('add-btn').addEventListener('click', openAddForm);
+document.getElementById('view-close').addEventListener('click', closeViewModal);
+document.getElementById('view-overlay').addEventListener('click', e => { if (e.target === document.getElementById('view-overlay')) closeViewModal(); });
+document.getElementById('form-close').addEventListener('click', closeFormModal);
+document.getElementById('f-cancel-btn').addEventListener('click', closeFormModal);
+document.getElementById('form-overlay').addEventListener('click', e => { if (e.target === document.getElementById('form-overlay')) closeFormModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeViewModal(); closeFormModal(); }
+});
 
-// Init GIS once the library loads
+// ── INIT ──────────────────────────────────────────────────────────────────────
 window.addEventListener('load', () => {
   const wait = setInterval(() => {
     if (window.google?.accounts?.oauth2) { clearInterval(wait); initGIS(); }
