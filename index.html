@@ -152,10 +152,15 @@ select{padding:0.55rem 1.8rem 0.55rem 0.75rem;border:1.5px solid var(--tan);bord
 .scrape-status.error{display:block;background:#FDF0F0;color:var(--danger);}
 
 /* ── TOAST ── */
-#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark-brown);color:white;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.85rem;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:2000;white-space:nowrap;}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark-brown);color:white;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.85rem;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:2000;display:flex;align-items:center;gap:0.75rem;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;}
 #toast.success{background:var(--success);}
 #toast.error{background:var(--danger);}
+#toast.warning{background:#7A5200;}
+#toast-undo{background:none;border:1.5px solid rgba(255,255,255,0.5);border-radius:5px;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;padding:0.2rem 0.6rem;cursor:pointer;white-space:nowrap;display:none;}
+#toast-undo:hover{background:rgba(255,255,255,0.15);}
+#toast-undo.visible{display:inline-block;}
+#toast-progress{position:absolute;bottom:0;left:0;height:3px;background:rgba(255,255,255,0.4);border-radius:0 0 8px 8px;width:100%;transform-origin:left;transition:transform linear;}
 
 .hidden{display:none!important;}
 @media(max-width:600px){
@@ -290,7 +295,11 @@ select{padding:0.55rem 1.8rem 0.55rem 0.75rem;border:1.5px solid var(--tan);bord
 </div>
 
 <!-- TOAST -->
-<div id="toast"></div>
+<div id="toast">
+  <span id="toast-msg"></span>
+  <button id="toast-undo" onclick="undoDelete()">Undo</button>
+  <div id="toast-progress"></div>
+</div>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://apis.google.com/js/api.js" async defer></script>
@@ -901,22 +910,54 @@ document.getElementById('f-save-btn').addEventListener('click', async () => {
   }
 });
 
-// ── DELETE FROM SHEET ─────────────────────────────────────────────────────────
-document.getElementById('f-delete-btn').addEventListener('click', async () => {
+// ── DELETE FROM SHEET (with undo) ────────────────────────────────────────────
+let pendingDelete = null;   // { recipe, rowValues, timer }
+
+document.getElementById('f-delete-btn').addEventListener('click', () => {
   if (editingIdx === null) return;
   const r = RECIPES[editingIdx];
-  if (!confirm(`Delete "${r.title}"? This cannot be undone.`)) return;
+  openDeleteConfirm(r, editingIdx);
+});
 
-  const btn = document.getElementById('f-delete-btn');
-  btn.disabled = true;
-  btn.textContent = 'Deleting…';
+function openDeleteConfirm(r, idx) {
+  // Build the row values to re-insert if user undoes
+  const rowValues = [
+    new Date().toLocaleString(),
+    r.title,
+    r.source || '',
+    serializeContent(r.ingredients || [], r.steps || []),
+    (r.tags || []).join(', '),
+    r.image || ''
+  ];
+  pendingDelete = { recipe: r, rowValues, idx };
 
+  closeFormModal();
+
+  // Show warning toast with undo button and 5s progress bar
+  showToast(`"${r.title}" will be deleted`, 'warning', true);
+
+  // Actually delete after 5 seconds unless undone
+  const timer = setTimeout(() => {
+    pendingDelete = null;
+    hideToast();
+    commitDelete(r);
+  }, 5000);
+  pendingDelete.timer = timer;
+}
+
+function undoDelete() {
+  if (!pendingDelete) return;
+  clearTimeout(pendingDelete.timer);
+  pendingDelete = null;
+  hideToast();
+  showToast('Deletion cancelled', 'success');
+}
+
+async function commitDelete(r) {
   try {
-    // Get spreadsheet metadata to find the sheet ID (not SHEET_ID which is the spreadsheet ID)
-    const metaRes = await apiFetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`);
-    const meta    = await metaRes.json();
+    const metaRes  = await apiFetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`);
+    const meta     = await metaRes.json();
     const sheetGid = meta.sheets[0].properties.sheetId;
-
     const sheetRow = r.rowIndex - 1; // 0-based
     const body = {
       requests: [{
@@ -930,7 +971,6 @@ document.getElementById('f-delete-btn').addEventListener('click', async () => {
     });
     if (!res.ok) throw new Error((await res.json()).error?.message || 'Failed to delete');
     showToast(`"${r.title}" deleted`, 'success');
-    closeFormModal();
     await fetchRecipes();
   } catch (e) {
     if (e instanceof AccessDeniedError) {
@@ -938,20 +978,46 @@ document.getElementById('f-delete-btn').addEventListener('click', async () => {
     } else {
       showToast(e.message, 'error');
     }
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Delete recipe';
   }
-});
+}
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
 let toastTimer;
-function showToast(msg, type = '') {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
+
+function showToast(msg, type = '', withUndo = false) {
+  const el       = document.getElementById('toast');
+  const undoBtn  = document.getElementById('toast-undo');
+  const progress = document.getElementById('toast-progress');
+  const msgSpan  = document.getElementById('toast-msg');
+
+  msgSpan.textContent = msg;
   el.className = `show ${type}`;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.className = ''; }, 3000);
+
+  if (withUndo) {
+    undoBtn.classList.add('visible');
+    // Animate the progress bar shrinking over 5 seconds
+    progress.style.transition = 'none';
+    progress.style.transform  = 'scaleX(1)';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        progress.style.transition = 'transform 5s linear';
+        progress.style.transform  = 'scaleX(0)';
+      });
+    });
+    // Auto-hide after 5.2s (slightly after the delete fires)
+    toastTimer = setTimeout(() => hideToast(), 5200);
+  } else {
+    undoBtn.classList.remove('visible');
+    progress.style.transition = 'none';
+    progress.style.transform  = 'scaleX(0)';
+    toastTimer = setTimeout(() => hideToast(), 3000);
+  }
+}
+
+function hideToast() {
+  const el = document.getElementById('toast');
+  el.className = '';
 }
 
 // ── EVENTS ────────────────────────────────────────────────────────────────────
