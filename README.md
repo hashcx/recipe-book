@@ -1,6 +1,6 @@
 ## Requirements
 
-A Google spreadsheet with a sheet named "Sheet1" that has data starting at row 2 with following columns:
+### A Google spreadsheet with a sheet named "Sheet1" that has data starting at row 2 with following columns:
 
 - A -> Date (date the recipe was recorded to the sheet)
 - B -> Recipe Name
@@ -10,7 +10,7 @@ A Google spreadsheet with a sheet named "Sheet1" that has data starting at row 2
 - F -> Image URL (to use as a cover for the recipe)
 
 
-Allow the app to access the Google Spreadsheet as follows:
+### Allow the app to access the Google Spreadsheet as follows:
 
 1. Go to https://console.cloud.google.com/
 2. Create new project and select it
